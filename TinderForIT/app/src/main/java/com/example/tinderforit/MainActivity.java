@@ -22,3 +22,5 @@ public class MainActivity extends Activity {
         }, 1500);
     }
 }
+
+// This line just add for testing commit code
