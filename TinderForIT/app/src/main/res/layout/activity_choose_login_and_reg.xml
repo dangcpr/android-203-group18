@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Choose_Login_And_Reg">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="375dp"
+                android:layout_height="812dp"
+                android:layout_gravity="center"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="25dp"
+                android:paddingTop="55dp"
+                android:paddingRight="25dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="218dp"
+                        android:layout_height="200dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/trademark" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Group 18"
+                        android:textColor="#EF1F1F"
+                        android:textSize="30dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="295dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="78dp"
+                            android:text="Sign up to continue"
+                            android:textColor="@color/black"
+                            android:textSize="18dp" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/login_with_email"
+                            android:layout_width="295dp"
+                            android:layout_height="56dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="26dp"
+                            android:layout_marginBottom="26dp"
+                            android:background="@drawable/botron_button"
+                            android:text="Continue with email"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/login_with_phone_number"
+                            android:layout_width="295dp"
+                            android:layout_height="56dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="25dp"
+                            android:background="@drawable/botron_button_v2"
+                            android:gravity="center"
+                            android:text="Use phone number"
+                            android:textColor="#EF1F1F"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="295dp"
+                        android:layout_height="106dp"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="86dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="10dp"
+                                android:src="@drawable/line1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="18dp"
+                                android:layout_weight="400"
+                                android:text="or sign up with"
+                                android:textColor="@color/black"
+                                android:textSize="12dp" />
+
+                            <ImageView
+                                android:layout_width="94dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/line2"
+                                android:layout_marginLeft="10dp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="horizontal">
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/login_with_facebook"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="25dp"
+                                android:background="@drawable/botron_button_facebook"
+                                android:gravity="center"
+                                android:textColor="#EF1F1F"
+                                android:textStyle="bold"></androidx.appcompat.widget.AppCompatButton>
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/login_with_google"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginBottom="25dp"
+                                android:background="@drawable/botron_button_google"
+                                android:gravity="center"
+                                android:textColor="#EF1F1F"
+                                android:textStyle="bold"></androidx.appcompat.widget.AppCompatButton>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+</LinearLayout>
