@@ -2,9 +2,10 @@ package com.example.tinderforit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 
-public class LoginGoogleActivity extends AppCompatActivity {
+public class LoginGoogleActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
