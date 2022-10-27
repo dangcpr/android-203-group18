@@ -57,7 +57,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="78dp"
-                            android:text="Sign up to continue"
+                            android:text="Sign in to continue"
                             android:textColor="@color/black"
                             android:textSize="18dp" />
 
