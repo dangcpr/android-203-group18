@@ -2,14 +2,13 @@ package com.example.tinderforit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.os.Bundle;
 
-public class LoginFacebookActivity extends Activity {
+public class CreateEmailAccountActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_facebook);
+        setContentView(R.layout.activity_create_email_account);
     }
 }

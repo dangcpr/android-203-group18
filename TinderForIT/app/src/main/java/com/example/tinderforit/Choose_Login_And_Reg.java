@@ -1,5 +1,6 @@
 package com.example.tinderforit;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -7,7 +8,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Choose_Login_And_Reg extends AppCompatActivity {
+public class Choose_Login_And_Reg extends Activity {
 
     private Button mLogin, mRegister;
 
