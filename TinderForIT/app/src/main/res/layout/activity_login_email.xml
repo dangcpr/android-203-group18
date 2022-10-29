@@ -99,7 +99,7 @@
                 android:fontFamily="@font/sk_modernist_bold"
                 android:text="Don't have an account? Register here"
                 android:textAllCaps="false"
-                android:textColor="#E94057"
+                android:textColor="@color/primary"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
