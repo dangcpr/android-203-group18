@@ -57,15 +57,15 @@
             android:layout_marginTop="50dp"
             android:layout_marginBottom="15dp"
             android:hint="Email"
-            app:hintTextColor="@color/primary"
-            app:boxStrokeColor="@color/primary">
+            app:boxStrokeColor="@color/primary"
+            app:hintTextColor="@color/primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_register_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textCursorDrawable="@drawable/cursor_custom"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:textCursorDrawable="@drawable/cursor_custom" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -75,16 +75,16 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:hint="Password"
-            app:hintTextColor="@color/primary"
             app:boxStrokeColor="@color/primary"
-            app:endIconMode="password_toggle">
+            app:endIconMode="password_toggle"
+            app:hintTextColor="@color/primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_register_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textCursorDrawable="@drawable/cursor_custom"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textCursorDrawable="@drawable/cursor_custom" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -94,16 +94,16 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:hint="Confirm Password"
-            app:hintTextColor="@color/primary"
             app:boxStrokeColor="@color/primary"
-            app:endIconMode="password_toggle">
+            app:endIconMode="password_toggle"
+            app:hintTextColor="@color/primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_register_retype_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textCursorDrawable="@drawable/cursor_custom"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:textCursorDrawable="@drawable/cursor_custom" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
