@@ -44,7 +44,7 @@ public class Choose_Login_And_Reg extends Activity {
         //firebase and google sign in
         mAuth=FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        // Check if user is signed in (non-null)
+        //Check if user is signed in (non-null)
         if(currentUser != null){
             currentUser.reload();
         }
@@ -110,6 +110,15 @@ public class Choose_Login_And_Reg extends Activity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     //finish();
+                                    boolean _isNewUser = task.getResult().getAdditionalUserInfo().isNewUser();
+
+                                    if(_isNewUser){
+                                        //Do Stuffs for new user
+                                        Toast.makeText(Choose_Login_And_Reg.this,"Login Fail Show Form Sign Up",Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        //Continue with Sign up
+                                        Toast.makeText(Choose_Login_And_Reg.this,"Login Success User is exists in Firebase",Toast.LENGTH_SHORT).show();
+                                    }
                                     Intent myIntent=new Intent(Choose_Login_And_Reg.this,MainActivity.class);
                                     startActivity(myIntent);
                                 }
