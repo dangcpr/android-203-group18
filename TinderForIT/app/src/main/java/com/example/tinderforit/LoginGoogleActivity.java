@@ -23,7 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 public class LoginGoogleActivity extends Activity {
-
+    // nếu hiện dialog lên thì không cần gọi activity này
     private static final int RC_SIGN_IN=7421;
     Button btnLogin;
 

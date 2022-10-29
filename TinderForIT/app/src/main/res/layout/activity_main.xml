@@ -16,15 +16,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right">
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#EF1F1F"
-        android:textColor="@color/white"
-        android:text="LogOut">
 
-    </Button>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="26dp"
+            android:layout_marginBottom="26dp"
+            android:background="@drawable/botron_button"
+            android:text="Log Out"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </FrameLayout>
