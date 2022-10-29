@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,9 +23,10 @@ public class LoginEmailActivity extends Activity {
     private Button mLogin;
     private Button mCreateAccount;
     private EditText infoEmail;
-    String Email;
+    private String Email;
     private EditText infoPassword;
-    String Password;
+    private String Password;
+    private TextView mForgetPass;
 
     private FirebaseAuth mAuth;
     private Context context;
@@ -38,10 +40,33 @@ public class LoginEmailActivity extends Activity {
         mCreateAccount = findViewById(R.id.btn_create_account);
         infoEmail = findViewById(R.id.info_email);
         infoPassword = findViewById(R.id.info_password);
+        mForgetPass = findViewById(R.id.forgot_pass);
 
         context = getApplicationContext();
 
         mAuth = FirebaseAuth.getInstance();
+
+        mForgetPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (infoEmail.getText().toString().isEmpty()) {
+                    infoEmail.setError("Email is Missing");
+                    return;
+                }
+
+                Email = infoEmail.getText().toString();
+                mAuth.sendPasswordResetEmail(Email)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful())
+                                    Toast.makeText(LoginEmailActivity.this,"Password reset link sent via email\nPlease also check your spam mail", Toast.LENGTH_SHORT).show();
+                                else
+                                    Toast.makeText(LoginEmailActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
 
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +78,7 @@ public class LoginEmailActivity extends Activity {
                     return;
                 }
                 if (infoPassword.getText().toString().isEmpty()) {
-                    infoEmail.setError("Password is Missing");
+                    infoPassword.setError("Password is Missing");
                     return;
                 }
 

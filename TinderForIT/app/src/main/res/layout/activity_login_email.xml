@@ -1,74 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginEmailActivity">
+    tools:context=".CreateEmailAccountActivity">
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/text_login"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/sk_modernist_bold"
-            android:text="Login"
-            android:textSize="34dp" />
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/info_email"
-            android:layout_width="295dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:hint="Email"
-            android:background="@drawable/botron_edittext"/>
-        <EditText
-            android:id="@+id/info_password"
-            android:layout_width="295dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:background="@drawable/botron_edittext"/>
+            <TextView
+                android:id="@+id/text_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/sk_modernist_bold"
+                android:text="Login"
+                android:textSize="34dp" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_login"
-            android:layout_width="295dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/botron_button"
-            android:text="Login"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:fontFamily="@font/sk_modernist_bold"
-            />
+            <EditText
+                android:id="@+id/info_email"
+                android:layout_width="295dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/botron_edittext"
+                android:hint="Email" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_create_account"
-            android:layout_width="295dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/botron_button_v2"
-            android:text="Don't have an account? Register here"
-            android:textAllCaps="false"
-            android:textColor="#E94057"
-            android:textStyle="bold"
-            android:fontFamily="@font/sk_modernist_bold"
-            />
-    </LinearLayout>
-</ScrollView>
+            <EditText
+                android:id="@+id/info_password"
+                android:layout_width="295dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/botron_edittext"
+                android:hint="Password"
+                android:inputType="textPassword" />
+
+            <TextView
+                android:id="@+id/forgot_pass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sk_modernist_bold"
+                android:text="FORGOT PASSWORD?"
+                android:textColor="#E94057" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_login"
+                android:layout_width="295dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/botron_button"
+                android:fontFamily="@font/sk_modernist_bold"
+                android:text="Login"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_create_account"
+                android:layout_width="295dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/botron_button_v2"
+                android:fontFamily="@font/sk_modernist_bold"
+                android:text="Don't have an account? Register here"
+                android:textAllCaps="false"
+                android:textColor="#E94057"
+                android:textStyle="bold" />
+        </LinearLayout>
+</LinearLayout>
