@@ -60,9 +60,9 @@ public class LoginEmailActivity extends Activity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful())
-                                    Toast.makeText(LoginEmailActivity.this,"Password reset link sent via email\nPlease also check your spam mail", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginEmailActivity.this,"Password reset link sent via email\nPlease also check your spam mail", Toast.LENGTH_LONG).show();
                                 else
-                                    Toast.makeText(LoginEmailActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginEmailActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             }
                         });
             }
