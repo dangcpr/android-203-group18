@@ -79,7 +79,7 @@ public class VerifyEmailActivity extends Activity {
 
                     if(noNeedSendEmail){
                         txtVerifyMsg.setText("Your Email is Verified. You can Login now");
-                        btnVerify.setEnabled(false);
+                        btnVerify.setVisibility(View.INVISIBLE);
                     }
                     else {
                         // send email to user
