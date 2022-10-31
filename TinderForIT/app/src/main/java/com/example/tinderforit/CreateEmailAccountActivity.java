@@ -66,7 +66,7 @@ public class CreateEmailAccountActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()) {
                         Toast.makeText(CreateEmailAccountActivity.this, "Register successfully",Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(CreateEmailAccountActivity.this, LoginEmailActivity.class);
+                        Intent i = new Intent(CreateEmailAccountActivity.this, VerifyEmailActivity.class);
                         startActivity(i);
                     } else {
                         Toast.makeText(CreateEmailAccountActivity.this, task.getException().getMessage(),Toast.LENGTH_SHORT).show();
