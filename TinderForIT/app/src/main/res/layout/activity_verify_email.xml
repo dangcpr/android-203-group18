@@ -54,7 +54,9 @@
             android:id="@+id/txt_verify_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="MSG"/>
+            android:text="MSG"
+            android:textSize="20sp"
+            android:ems="10"/>
     </LinearLayout>
 
     <!--Button-->

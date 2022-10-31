@@ -47,7 +47,6 @@ public class VerifyEmailActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-
         checkVerifiedEmail();
     }
 
@@ -55,24 +54,33 @@ public class VerifyEmailActivity extends Activity {
         mAuth.getCurrentUser().reload();
         boolean isVerified = mAuth.getCurrentUser().isEmailVerified();
 
+        // if verified
         if(isVerified) {
-            txtVerifyMsg.setText("");
-            btnVerify.setVisibility(View.INVISIBLE);
-            Toast.makeText(VerifyEmailActivity.this,"Email verified successfully",Toast.LENGTH_SHORT).show();
+            // inform user
+            Toast.makeText(VerifyEmailActivity.this,"Email verified successfully",Toast.LENGTH_LONG).show();
+
+            // return to login screen
+            Intent i = new Intent(VerifyEmailActivity.this, LoginEmailActivity.class);
+            startActivity(i);
+            finish();
         }
 
+        // if not verified
         if(!isVerified) {
+            // inform user
             txtVerifyMsg.setText("Your Email Address is not Verify\nPlease verify your Email Address");
+
+            // user click verify button
             btnVerify.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
+                    // send email to user
                     mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()){
-                                txtVerifyMsg.setText("Verification email is sent.Please check your mail box or spam");
+                                txtVerifyMsg.setText("Verification email is sent\n Please check your mail box or spam\n");
                             } else {
                                 Toast.makeText(VerifyEmailActivity.this,"Error" + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                             }
