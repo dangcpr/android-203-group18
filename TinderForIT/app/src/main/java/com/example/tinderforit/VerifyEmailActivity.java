@@ -78,7 +78,7 @@ public class VerifyEmailActivity extends Activity {
                     boolean noNeedSendEmail = mAuth.getCurrentUser().isEmailVerified();
 
                     if(noNeedSendEmail){
-                        txtVerifyMsg.setText("Your Email is Verified. You cn Login now");
+                        txtVerifyMsg.setText("Your Email is Verified. You can Login now");
                         btnVerify.setEnabled(false);
                     }
                     else {
