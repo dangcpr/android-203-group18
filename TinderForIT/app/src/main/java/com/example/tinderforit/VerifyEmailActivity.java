@@ -81,17 +81,19 @@ public class VerifyEmailActivity extends Activity {
                         txtVerifyMsg.setText("Your Email is Verified. You cn Login now");
                         btnVerify.setEnabled(false);
                     }
-                    // send email to user
-                    mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
-                                txtVerifyMsg.setText("Verification email is sent\n Please check your mail box or spam\n");
-                            } else {
-                                Toast.makeText(VerifyEmailActivity.this,"Error" + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                    else {
+                        // send email to user
+                        mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    txtVerifyMsg.setText("Verification email is sent\n Please check your mail box or spam\n");
+                                } else {
+                                    Toast.makeText(VerifyEmailActivity.this,"Error" + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             });
         }
