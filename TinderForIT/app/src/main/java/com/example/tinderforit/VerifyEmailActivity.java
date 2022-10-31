@@ -74,7 +74,13 @@ public class VerifyEmailActivity extends Activity {
             btnVerify.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    mAuth.getCurrentUser().reload();
+                    boolean noNeedSendEmail = mAuth.getCurrentUser().isEmailVerified();
 
+                    if(noNeedSendEmail){
+                        txtVerifyMsg.setText("Your Email is Verified. You cn Login now");
+                        btnVerify.setEnabled(false);
+                    }
                     // send email to user
                     mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
