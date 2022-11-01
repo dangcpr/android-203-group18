@@ -30,7 +30,7 @@
                 android:gravity="center_horizontal"
                 android:text="REGISTER"
                 android:textColor="@color/white"
-                android:textSize="40sp" />
+                android:textSize="40sp"/>
         </RelativeLayout>
 
         <View
@@ -54,11 +54,15 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:layout_marginBottom="15dp"
             android:hint="Email"
+
             app:boxStrokeColor="@color/primary"
-            app:hintTextColor="@color/primary">
+            app:hintTextColor="@color/primary"
+            app:boxCornerRadiusBottomEnd="15dp"
+            app:boxCornerRadiusTopStart="15dp"
+            app:boxCornerRadiusBottomStart="15dp"
+            app:boxCornerRadiusTopEnd="15dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_register_email"
@@ -75,9 +79,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:hint="Password"
+
             app:boxStrokeColor="@color/primary"
             app:endIconMode="password_toggle"
-            app:hintTextColor="@color/primary">
+            app:hintTextColor="@color/primary"
+            app:boxCornerRadiusBottomEnd="15dp"
+            app:boxCornerRadiusTopStart="15dp"
+            app:boxCornerRadiusBottomStart="15dp"
+            app:boxCornerRadiusTopEnd="15dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_register_password"
@@ -94,9 +103,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:hint="Confirm Password"
+
             app:boxStrokeColor="@color/primary"
             app:endIconMode="password_toggle"
-            app:hintTextColor="@color/primary">
+            app:hintTextColor="@color/primary"
+            app:boxCornerRadiusBottomEnd="15dp"
+            app:boxCornerRadiusTopStart="15dp"
+            app:boxCornerRadiusBottomStart="15dp"
+            app:boxCornerRadiusTopEnd="15dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_register_retype_password"
@@ -109,16 +123,30 @@
 
     <!--Button-->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_register_account"
+        android:id="@+id/btn_return_login"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="110dp"
+        android:background="@drawable/botron_button_v2"
+        android:text="Already have an account? Login now"
+        android:textAllCaps="false"
+        android:textColor="@color/primary"
+        android:fontFamily="@font/sk_modernist_bold" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_register_account"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignBottom="@+id/layout_form"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="180dp"
         android:background="@drawable/botron_button"
         android:text="Register"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textStyle="bold" />
+        android:fontFamily="@font/sk_modernist_bold" />
 </RelativeLayout>
