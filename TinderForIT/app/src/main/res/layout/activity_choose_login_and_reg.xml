@@ -129,12 +129,19 @@
                             android:layout_gravity="center"
                             android:orientation="horizontal">
 
-                            <com.facebook.login.widget.LoginButton
+                            <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/login_with_facebook"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"/>
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="25dp"
+                                android:background="@drawable/botron_button_facebook"
+                                android:gravity="center"
+                                android:textColor="#EF1F1F"
+                                android:textStyle="bold"></androidx.appcompat.widget.AppCompatButton>
 
-                            <!--<androidx.appcompat.widget.AppCompatButton
+                            <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/login_with_google"
                                 android:layout_width="64dp"
                                 android:layout_height="64dp"
@@ -144,7 +151,7 @@
                                 android:background="@drawable/botron_button_google"
                                 android:gravity="center"
                                 android:textColor="#EF1F1F"
-                                android:textStyle="bold"></androidx.appcompat.widget.AppCompatButton>-->
+                                android:textStyle="bold"></androidx.appcompat.widget.AppCompatButton>
 
                         </LinearLayout>
                     </LinearLayout>
