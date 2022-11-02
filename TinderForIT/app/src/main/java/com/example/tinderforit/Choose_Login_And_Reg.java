@@ -83,10 +83,7 @@ public class Choose_Login_And_Reg extends Activity {
         mLoginGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent i = new Intent(Choose_Login_And_Reg.this, com.example.tinderforit.LoginGoogleActivity.class);
-//                startActivity(i);
-                Intent signIntent=gsc.getSignInIntent();
-                startActivityForResult(signIntent,RC_SIGN_IN);
+                LoginWithGoogle();
             }
         });
 
