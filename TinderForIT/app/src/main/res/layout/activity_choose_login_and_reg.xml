@@ -57,7 +57,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="78dp"
-                            android:text="Sign in to continue"
+                            android:text="Continue with"
                             android:textColor="@color/black"
                             android:textSize="18dp" />
 
