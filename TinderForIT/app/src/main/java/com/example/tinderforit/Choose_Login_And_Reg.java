@@ -50,6 +50,9 @@ public class Choose_Login_And_Reg extends Activity {
         FacebookSdk.sdkInitialize(this.getApplicationContext());
 
         mAuth = FirebaseAuth.getInstance();
+
+
+        ///////////////////////////////
         mCallbackManager = CallbackManager.Factory.create();
 
         // Kết nối với facebook
@@ -66,6 +69,7 @@ public class Choose_Login_And_Reg extends Activity {
             @Override
             public void onError(FacebookException error) {}
         });
+        ////////////////////////////////
 
         btnLoginFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +79,7 @@ public class Choose_Login_And_Reg extends Activity {
             }
         });
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
