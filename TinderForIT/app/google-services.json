@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "748659296709",
+    "firebase_url": "https://tinder-it-e576d-default-rtdb.firebaseio.com",
     "project_id": "tinder-it-e576d",
     "storage_bucket": "tinder-it-e576d.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "748659296709-bg69q77le1j164473rov63pn94g1opto.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tinderforit",
+            "certificate_hash": "9d4e4f5e3673cbd9a7aa1949996e5fb6e9befbd7"
+          }
+        },
         {
           "client_id": "748659296709-tj9ngfnf15shu6s4sknirs4ouvl6ea3a.apps.googleusercontent.com",
           "client_type": 3
