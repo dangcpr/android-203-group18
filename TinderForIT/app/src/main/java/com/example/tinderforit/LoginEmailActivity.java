@@ -93,7 +93,7 @@ public class LoginEmailActivity extends Activity {
                                 if (task.isSuccessful()){
                                     // Check is verified email
                                     if(!mAuth.getCurrentUser().isEmailVerified()){
-                                        Intent i = new Intent(LoginEmailActivity.this, VerifyEmailActivity.class);
+                                        Intent i = new Intent(LoginEmailActivity.this, MainActivity.class);
                                         startActivity(i);
                                         finish();
                                     } else

@@ -74,7 +74,7 @@ public class LoginGoogleActivity extends Activity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     //finish();
-                                    Intent myIntent=new Intent(LoginGoogleActivity.this,MainActivity.class);
+                                    Intent myIntent=new Intent(LoginGoogleActivity.this, SplashScreenActivity.class);
                                     startActivity(myIntent);
                                 }
                                 else{
