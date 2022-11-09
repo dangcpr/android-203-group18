@@ -1,85 +1,50 @@
 package com.example.tinderforit;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
-import android.widget.Button;
+import android.view.MenuItem;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
+public class MainActivity extends AppCompatActivity {
 
-public class MainActivity extends Activity {
-
-    Button btnLogOut;
-    private FirebaseAuth mAuth;
-    GoogleSignInOptions gso;
-    GoogleSignInClient gsc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //connect firebase and google login request
-        mAuth=FirebaseAuth.getInstance();
-        gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        gsc= GoogleSignIn.getClient(this,gso);
-        /*
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent i = new Intent(MainActivity.this, Choose_Login_And_Reg.class);
-                startActivity(i);
-                finish();
-            }
-        }, 1500);
-         */
-        //display user info
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
 
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        if (acct != null) {
-            String personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
-            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
-            //show email address
-            Toast.makeText(MainActivity.this,personEmail,Toast.LENGTH_SHORT).show();
-        }
-
-        btnLogOut=(Button) findViewById(R.id.btnLogout);
-        btnLogOut.setOnClickListener(new View.OnClickListener() {
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                LogOut();
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId())
+                {
+                    case R.id.action_profile:
+                        Intent i = new Intent(MainActivity.this, SettingProfileActivity.class);
+                        startActivity(i);
+                        break;
+
+                    case R.id.action_chat:
+                        Intent j = new Intent(MainActivity.this, ChatActivity.class);
+                        startActivity(j);
+                        break;
+
+                    case R.id.action_matches:
+                        Intent k = new Intent(MainActivity.this, MatchesActivity.class);
+                        startActivity(k);
+                        break;
+
+                }
+                return false;
             }
         });
-    }
-
-    private void LogOut(){
-        gsc.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        mAuth.signOut();
-                        //finish();
-                        Intent myIntent=new Intent(MainActivity.this,Choose_Login_And_Reg.class);
-                        startActivity(myIntent);
-                    }
-                });
     }
 }
