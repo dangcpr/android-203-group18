@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -93,11 +94,14 @@ public class LoginEmailActivity extends Activity {
                                 if (task.isSuccessful()){
                                     // Check is verified email
                                     if(!mAuth.getCurrentUser().isEmailVerified()){
-                                        Intent i = new Intent(LoginEmailActivity.this, MainActivity.class);
+                                        Intent i = new Intent(LoginEmailActivity.this, VerifyEmailActivity.class);
                                         startActivity(i);
                                         finish();
-                                    } else
-                                    Toast.makeText(LoginEmailActivity.this, "Login is successful", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Intent i = new Intent(LoginEmailActivity.this, VerifyEmailActivity.class);
+                                        startActivity(i);
+                                        Toast.makeText(LoginEmailActivity.this, "Login is successful", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                                 else {
                                     Toast.makeText(LoginEmailActivity.this, "Login is failure: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
