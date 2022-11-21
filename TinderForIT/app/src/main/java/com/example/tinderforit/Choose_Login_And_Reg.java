@@ -8,8 +8,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.Login;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -19,18 +25,23 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.Arrays;
 
 public class Choose_Login_And_Reg extends Activity {
 
     private Button mLogin, mRegister;
 
-    private static final int RC_SIGN_IN=7421;
+    private static final int RC_SIGN_IN=1701;
     private FirebaseAuth mAuth;
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
+    CallbackManager mCallbackManager;
+    private LoginButton loginButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +51,7 @@ public class Choose_Login_And_Reg extends Activity {
         Button mLoginFacebook = (Button) findViewById(R.id.login_with_facebook);
         Button mLoginPhone = (Button) findViewById(R.id.login_with_phone_number);
         Button mLoginGoogle = (Button) findViewById(R.id.login_with_google);
-
+        loginButton=findViewById(R.id.login_button);
         //firebase and google sign in
         mAuth=FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -54,7 +65,30 @@ public class Choose_Login_And_Reg extends Activity {
                 .build();
         gsc= GoogleSignIn.getClient(this,gso);
 
+        //login facebook
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCallbackManager = CallbackManager.Factory.create();
+                //loginButton.setReadPermissions("email", "public_profile");
+                loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Toast.makeText(Choose_Login_And_Reg.this,"Login Facebook success",Toast.LENGTH_SHORT).show();
+                        handleFacebookAccessToken(loginResult.getAccessToken());
+                    }
+                    @Override
+                    public void onCancel() {
+                        Toast.makeText(Choose_Login_And_Reg.this,"Login Facebook cancel",Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void onError(@NonNull FacebookException error) {
+                        Toast.makeText(Choose_Login_And_Reg.this,"Login Facebook error"+error.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
 
+            }
+        });
 
         mLoginEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,8 +101,7 @@ public class Choose_Login_And_Reg extends Activity {
         mLoginFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Choose_Login_And_Reg.this, com.example.tinderforit.LoginFacebookActivity.class);
-                startActivity(i);
+                LoginWithFacebook();
             }
         });
 
@@ -88,6 +121,13 @@ public class Choose_Login_And_Reg extends Activity {
         });
 
     }
+
+    private void LoginWithFacebook() {
+        //login with google account
+        //when you click on facebook icon call loginButton.setOnClickListener();
+        loginButton.callOnClick();
+    }
+
     private  void LoginWithGoogle(){
         //login with google account
         Intent signIntent=gsc.getSignInIntent();
@@ -111,25 +151,56 @@ public class Choose_Login_And_Reg extends Activity {
 
                                     if(_isNewUser){
                                         //Do Stuffs for new user
-                                        Toast.makeText(Choose_Login_And_Reg.this,"Login Fail Show Form Sign Up",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Choose_Login_And_Reg.this,"Login Google Fail Show Form Sign Up",Toast.LENGTH_SHORT).show();
                                     }else{
                                         //Continue with Sign up
-                                        Toast.makeText(Choose_Login_And_Reg.this,"Login Success User is exists in Firebase",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Choose_Login_And_Reg.this,"Login GoogleSuccess User is exists in Firebase",Toast.LENGTH_SHORT).show();
                                     }
                                     Intent myIntent=new Intent(Choose_Login_And_Reg.this,MainActivity.class);
                                     startActivity(myIntent);
                                 }
                                 else{
                                     //do something
-                                    Toast.makeText(Choose_Login_And_Reg.this, "something went wrong", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Choose_Login_And_Reg.this, "GG Login:something went wrong", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
             }
             catch (ApiException e){
                 //do something
-                Toast.makeText(Choose_Login_And_Reg.this, "something went wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Choose_Login_And_Reg.this, "GG Login:something went wrong", Toast.LENGTH_SHORT).show();
             }
         }
+        else{//login facebook
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        }
     }
+    private void handleFacebookAccessToken(AccessToken token) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(Choose_Login_And_Reg.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            //finish();
+                            boolean _isNewUser = task.getResult().getAdditionalUserInfo().isNewUser();
+
+                            if(_isNewUser){
+                                //Do Stuffs for new user
+                                Toast.makeText(Choose_Login_And_Reg.this,"Login Facebook Fail Show Form Sign Up",Toast.LENGTH_SHORT).show();
+                            }else{
+                                //Continue with Sign up
+                                Toast.makeText(Choose_Login_And_Reg.this,"Login Facebook Success User is exists in Firebase",Toast.LENGTH_SHORT).show();
+                            }
+                            Intent myIntent=new Intent(Choose_Login_And_Reg.this,MainActivity.class);
+                            startActivity(myIntent);
+                        }
+                        else{
+                            //do something
+                            Toast.makeText(Choose_Login_And_Reg.this, "FB Login: something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
 }
