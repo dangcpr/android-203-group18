@@ -98,6 +98,9 @@ public class LoginEmailActivity extends Activity {
                                         finish();
                                     } else
                                         Toast.makeText(LoginEmailActivity.this, "Login is successful", Toast.LENGTH_LONG).show();
+                                        Intent i = new Intent(LoginEmailActivity.this, MainActivity.class);
+                                        startActivity(i);
+                                        finish();
                                 }
                                 else {
                                     Toast.makeText(LoginEmailActivity.this, "Login is failure: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
