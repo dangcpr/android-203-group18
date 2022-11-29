@@ -93,11 +93,15 @@ public class LoginEmailActivity extends Activity {
                                 if (task.isSuccessful()){
                                     // Check is verified email
                                     if(!mAuth.getCurrentUser().isEmailVerified()){
+                                        Intent i = new Intent(LoginEmailActivity.this, VerifyEmailActivity.class);
+                                        startActivity(i);
+                                        finish();
+                                    } else {
+                                        Toast.makeText(LoginEmailActivity.this, "Login is successful", Toast.LENGTH_LONG).show();
                                         Intent i = new Intent(LoginEmailActivity.this, MainActivity.class);
                                         startActivity(i);
                                         finish();
-                                    } else
-                                    Toast.makeText(LoginEmailActivity.this, "Login is successful", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                                 else {
                                     Toast.makeText(LoginEmailActivity.this, "Login is failure: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();

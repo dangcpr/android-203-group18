@@ -1,15 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileFragment">
+    android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/textProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Profile"
-        android:textSize="50dp"/>
+        android:textSize="50dp" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="193dp"
+        android:layout_height="219dp"
+        android:layout_gravity="center"
+        android:contentDescription="No Image"
+        android:src="@drawable/noimage" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/chooseimage"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="26dp"
+        android:background="@drawable/botron_button"
+        android:text="CHOOSE IMAGE"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layouttextFirstName"
+        android:layout_width="295dp"
+        android:layout_height="56dp"
+        android:layout_margin="15dp"
+        android:layout_gravity="center_horizontal"
+        android:hint="First Name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textCursorDrawable="@drawable/cursor_custom"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layouttextLastName"
+        android:layout_width="295dp"
+        android:layout_height="56dp"
+        android:layout_margin="15dp"
+        android:layout_gravity="center_horizontal"
+        android:hint="Last Name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textCursorDrawable="@drawable/cursor_custom"
+        />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layouttextDOB"
+        android:layout_width="295dp"
+        android:layout_height="56dp"
+        android:layout_margin="15dp"
+        android:layout_gravity="center_horizontal"
+
+        android:hint="Date of Birth">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textDOB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/sendinfo"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="26dp"
+        android:background="@drawable/botron_button"
+        android:text="SEND"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+</LinearLayout>

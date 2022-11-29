@@ -3,11 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/drawable/botron_button.xml" value="0.1225" />
         <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/drawable/botron_button_facebook.xml" value="0.1225" />
         <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/drawable/botron_button_google.xml" value="0.1" />
         <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/drawable/botron_button_v2.xml" value="0.1225" />
         <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/drawable/botron_edittext.xml" value="0.1" />
+        <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/drawable/ic_launcher_background.xml" value="0.11200000000000002" />
         <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/drawable/wave.xml" value="0.1575" />
         <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/font/textview.xml" value="0.1" />
         <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/layout/activity_choose_login_and_reg.xml" value="0.1" />
@@ -16,6 +18,14 @@
         <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/layout/activity_login_facebook.xml" value="0.1" />
         <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/layout/activity_login_google.xml" value="0.1" />
         <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/layout/activity_login_phone.xml" value="0.1" />
+        <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/layout/activity_verify_email.xml" value="0.1" />
+        <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/layout/card.xml" value="0.15364583333333334" />
+        <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/layout/fragment_chat.xml" value="0.121875" />
+        <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/layout/fragment_home.xml" value="0.264" />
+        <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/layout/fragment_matches.xml" value="0.121875" />
+        <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/layout/fragment_profile.xml" value="0.17592592592592593" />
+        <entry key="..\:/AndroidCourse/android-203-group18/TinderForIT/app/src/main/res/layout/splash_screen.xml" value="0.121875" />
         <entry key="..\:/Huu Phuc/Study/@ Uni/Nam 3/Mobile/DoAn/android-203-group18/TinderForIT/app/src/main/res/drawable/botron_button.xml" value="0.144" />
         <entry key="..\:/Huu Phuc/Study/@ Uni/Nam 3/Mobile/DoAn/android-203-group18/TinderForIT/app/src/main/res/drawable/botron_edittext.xml" value="0.144" />
         <entry key="..\:/Huu Phuc/Study/@ Uni/Nam 3/Mobile/DoAn/android-203-group18/TinderForIT/app/src/main/res/layout/activity_choose_login_and_reg.xml" value="0.33" />
@@ -23,33 +33,15 @@
         <entry key="..\:/Huu Phuc/Study/@ Uni/Nam 3/Mobile/DoAn/android-203-group18/TinderForIT/app/src/main/res/layout/activity_login_email.xml" value="0.20833333333333334" />
         <entry key="..\:/Huu Phuc/Study/@ Uni/Nam 3/Mobile/DoAn/android-203-group18/TinderForIT/app/src/main/res/layout/activity_main.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2125" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/drawable/botron_button.xml" value="0.203" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/drawable/botron_button_facebook.xml" value="0.1235" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/drawable/botron_button_gmail.xml" value="0.2125" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/drawable/botron_button_google.xml" value="0.1235" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/drawable/botron_button_v2.xml" value="0.2125" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/drawable/botron_button_v3.xml" value="0.2125" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/drawable/botron_edittext.xml" value="0.1235" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2125" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/activity_chat.xml" value="0.3234375" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/activity_choose_login_and_reg.xml" value="0.3333333333333333" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/activity_create_email_account.xml" value="0.3234375" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/activity_login_email.xml" value="0.3234375" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/activity_login_facebook.xml" value="0.3234375" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/activity_login_google.xml" value="0.3234375" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/activity_login_phone.xml" value="0.3234375" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/activity_main.xml" value="0.18568994889267462" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/activity_choose_login_and_reg.xml" value="0.3234375" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/activity_main.xml" value="0.3234375" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/activity_splash.xml" value="0.3234375" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/activity_verify_email.xml" value="0.2734375" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/botron_button.xml" value="0.3223958333333333" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/fragment_chat.xml" value="0.30185185185185187" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/fragment_home.xml" value="0.3234375" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/fragment_main.xml" value="0.3234375" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/fragment_matches.xml" value="0.3234375" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/fragment_profile.xml" value="0.3234375" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/layout_navigation_bottom_view.xml" value="0.3103448275862069" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/layout/splash_screen.xml" value="0.3234375" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/android-203-group18/TinderForIT/app/src/main/res/menu/menu_bottom_nav.xml" value="0.3223958333333333" />
       </map>
     </option>
   </component>
