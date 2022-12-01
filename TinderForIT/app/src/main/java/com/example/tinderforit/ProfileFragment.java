@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -32,6 +34,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -77,6 +80,8 @@ public class ProfileFragment extends Fragment {
     Uri imageUri;
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
+    DatabaseReference mDatabase;
+    FirebaseAuth mAuth;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -133,7 +138,6 @@ public class ProfileFragment extends Fragment {
         btnUploadImg = v.findViewById(R.id.uploadimage);
         avatar = v.findViewById(R.id.avatar);
 
-        DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -234,18 +238,53 @@ public class ProfileFragment extends Fragment {
             // You can use user auth id instead of uuid if your app has firebase auth
             // Now using the below code we will store the file
 
-            reference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    if (task.isSuccessful()){
-                        // Image uploaded successfully
-                        Toast.makeText(getActivity(), "Image Uploaded successfully", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+//            reference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+//                    if (task.isSuccessful()){
+//                        // Image uploaded successfully
+//                        Toast.makeText(getActivity(), "Image Uploaded successfully", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            });
 
+            reference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+
+                            mAuth = FirebaseAuth.getInstance();
+                            String userId;
+                            if (mAuth != null && mAuth.getCurrentUser() != null)
+                                userId = mAuth.getCurrentUser().getUid();
+                            else
+                                return;
+
+                            mDatabase = FirebaseDatabase.getInstance().getReference().child("UserProfile");
+
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("imageUrl", String.valueOf(uri));
+                            mDatabase.child(userId).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(getActivity(), "Thêm hình ảnh thành công", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), "Thêm thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
 
