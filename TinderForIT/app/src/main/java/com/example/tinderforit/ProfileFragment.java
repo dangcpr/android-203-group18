@@ -1,8 +1,13 @@
 package com.example.tinderforit;
 
 import android.app.DatePickerDialog;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -13,6 +18,8 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,8 +27,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,7 +52,7 @@ public class ProfileFragment extends Fragment {
     private String mParam2;
     private int GALlERY_REG_CODE = 1000 ;
 
-    private Button btnChooseimg;
+    private Button btnUploadImg;
 
     private String userid;
     private String email;
@@ -61,7 +72,11 @@ public class ProfileFragment extends Fragment {
 
     private Button btnSend;
 
+    private ImageView avatar;
 
+    Uri imageUri;
+
+    FirebaseStorage storage = FirebaseStorage.getInstance();
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -114,6 +129,9 @@ public class ProfileFragment extends Fragment {
 
         LDOB = (TextInputLayout) v.findViewById(R.id.layouttextDOB);
         TDOB = (TextInputEditText) v.findViewById(R.id.textDOB);
+
+        btnUploadImg = v.findViewById(R.id.uploadimage);
+        avatar = v.findViewById(R.id.avatar);
 
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -187,8 +205,63 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+
+        avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGetContent.launch("image/*");
+
+            }
+        });
+
+        btnUploadImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadImage();
+            }
+        });
+
         return v;
     }
+
+    private void uploadImage() {
+        // here we need to access the below result code but we can't
+        // So to solve it, we will take it as global
+        if (imageUri != null){
+            StorageReference reference = storage.getReference().child("Image/" + UUID.randomUUID().toString());
+            // we are creating a reference to store the image in firebase storage
+            // It will be stored inside images folder in firebase storage.
+            // You can use user auth id instead of uuid if your app has firebase auth
+            // Now using the below code we will store the file
+
+            reference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if (task.isSuccessful()){
+                        // Image uploaded successfully
+                        Toast.makeText(getActivity(), "Image Uploaded successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+        }
+    }
+
+    private ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri result) {
+                    // this result is the result of uri
+                    if (result != null){
+                        avatar.setImageURI(result);
+                        // result will be set in imageUri
+                        imageUri = result;
+                    }
+                }
+    });
+
 }
 
 @IgnoreExtraProperties
