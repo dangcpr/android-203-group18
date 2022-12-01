@@ -271,7 +271,7 @@ public class ProfileFragment extends Fragment {
                             mDatabase.child(userId).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    Toast.makeText(getActivity(), "Thêm hình ảnh thành công", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Add image successfully", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -282,7 +282,7 @@ public class ProfileFragment extends Fragment {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), "Thêm thất bại", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Add image failure", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
