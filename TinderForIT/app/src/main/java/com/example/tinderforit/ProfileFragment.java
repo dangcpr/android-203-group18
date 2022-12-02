@@ -26,15 +26,20 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -82,6 +87,7 @@ public class ProfileFragment extends Fragment {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     DatabaseReference mDatabase;
     FirebaseAuth mAuth;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -140,7 +146,7 @@ public class ProfileFragment extends Fragment {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        getUserData();
 
         LDOB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -300,6 +306,54 @@ public class ProfileFragment extends Fragment {
                     }
                 }
     });
+
+    private void getUserData() {
+
+        userid = user.getUid();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("UserProfile");
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("UserProfile").child(userid);
+
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                    if (map.get("firstName") != null) {
+                        firstName = map.get("firstName").toString();
+                        TfName.setText(firstName);
+                        LfName.getEditText().setText(firstName);
+                    }
+                    if (map.get("lastName") != null) {
+                        lastName = map.get("lastName").toString();
+                        TlName.setText(lastName);
+                        LfName.getEditText().setText(lastName);
+                    }
+                    if (map.get("dateOfBirth") != null) {
+                        dateOfBirth = map.get("dateOfBirth").toString();
+                        TDOB.setText(dateOfBirth);
+                        LDOB.getEditText().setText(dateOfBirth);
+                    }
+
+
+                    if (map.get("imageUrl") != null){
+                        String message = dataSnapshot.child("imageUrl").getValue(String.class);
+                        Picasso.get()
+                                .load(message)
+                                .into(avatar);
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 }
 
