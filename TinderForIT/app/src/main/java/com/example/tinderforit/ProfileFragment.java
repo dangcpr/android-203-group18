@@ -246,7 +246,7 @@ public class ProfileFragment extends Fragment {
         // here we need to access the below result code but we can't
         // So to solve it, we will take it as global
         if (imageUri != null){
-            StorageReference reference = storage.getReference().child("Image/" + UUID.randomUUID().toString());
+            StorageReference reference = storage.getReference().child("Image/" + userid.toString());
             // we are creating a reference to store the image in firebase storage
             // It will be stored inside images folder in firebase storage.
             // You can use user auth id instead of uuid if your app has firebase auth
@@ -270,8 +270,6 @@ public class ProfileFragment extends Fragment {
                     reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-
-//                            mDatabase = FirebaseDatabase.getInstance().getReference().child("UserProfile");
 
                             HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("imageUrl", String.valueOf(uri));
@@ -332,12 +330,24 @@ public class ProfileFragment extends Fragment {
                     }
 
 
-                    if (map.get("imageUrl") != null){
-                        String message = dataSnapshot.child("imageUrl").getValue(String.class);
-                        Picasso.get()
-                                .load(message)
-                                .into(avatar);
-                    }
+//                    if (map.get("imageUrl") != null){
+//                        String message = dataSnapshot.child("imageUrl").getValue(String.class);
+//                        Picasso.get()
+//                                .load(message)
+//                                .into(avatar);
+//                    }
+
+                    StorageReference reference = storage.getReference().child("Image/" + userid);
+
+                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String message = uri.toString();
+                            Picasso.get()
+                                    .load(message)
+                                    .into(avatar);
+                        }
+                    });
 
                 }
 
