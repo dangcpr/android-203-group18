@@ -37,49 +37,47 @@
         android:id="@+id/layouttextFirstName"
         android:layout_width="295dp"
         android:layout_height="56dp"
-        android:layout_margin="15dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="15dp"
         android:hint="First Name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textFirstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textCursorDrawable="@drawable/cursor_custom"
-            />
+            android:textCursorDrawable="@drawable/cursor_custom" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layouttextLastName"
         android:layout_width="295dp"
         android:layout_height="56dp"
-        android:layout_margin="15dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="15dp"
         android:hint="Last Name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textCursorDrawable="@drawable/cursor_custom"
-        />
+            android:textCursorDrawable="@drawable/cursor_custom" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layouttextDOB"
         android:layout_width="295dp"
         android:layout_height="56dp"
-        android:layout_margin="15dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="15dp"
 
         android:hint="Date of Birth">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textDOB"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sendinfo"
         android:layout_width="150dp"

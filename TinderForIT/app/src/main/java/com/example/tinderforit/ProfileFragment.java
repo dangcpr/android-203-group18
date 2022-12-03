@@ -146,6 +146,12 @@ public class ProfileFragment extends Fragment {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        userid = user.getUid();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("UserProfile");
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("UserProfile").child(userid);
+
         getUserData();
 
         LDOB.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +197,7 @@ public class ProfileFragment extends Fragment {
                         return;
                     }
                     if (TlName.getText().toString().isEmpty()) {
-                        TfName.setError("Last name is missing");
+                        TlName.setError("Last name is missing");
                         return;
                     }
                     if (TDOB.getText().toString().isEmpty()) {
@@ -207,12 +213,13 @@ public class ProfileFragment extends Fragment {
 
                     UserProfile userProfile = new UserProfile(email, firstName, lastName, dateOfBirth);
 
-                    mDatabase.child("UserProfile").child(userid).setValue(userProfile);
+                    mDatabase.setValue(userProfile);
                     Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
                 } catch (Exception error1) {
                     Toast.makeText(getActivity(), "Failure" + error1.getMessage(), Toast.LENGTH_LONG).show();
                     error1.printStackTrace();
                 }
+                uploadImage();
             }
         });
 
@@ -224,6 +231,8 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+
+        // upload image đã được tích hợp vào nút save ==> khi bấm save thì cả thông tin cá nhân và avatar cùng lúc được nạp lên firebase database
         btnUploadImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -263,18 +272,11 @@ public class ProfileFragment extends Fragment {
                         @Override
                         public void onSuccess(Uri uri) {
 
-                            mAuth = FirebaseAuth.getInstance();
-                            String userId;
-                            if (mAuth != null && mAuth.getCurrentUser() != null)
-                                userId = mAuth.getCurrentUser().getUid();
-                            else
-                                return;
-
-                            mDatabase = FirebaseDatabase.getInstance().getReference().child("UserProfile");
+//                            mDatabase = FirebaseDatabase.getInstance().getReference().child("UserProfile");
 
                             HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("imageUrl", String.valueOf(uri));
-                            mDatabase.child(userId).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            mDatabase.updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Toast.makeText(getActivity(), "Add image successfully", Toast.LENGTH_SHORT).show();
@@ -308,12 +310,6 @@ public class ProfileFragment extends Fragment {
     });
 
     private void getUserData() {
-
-        userid = user.getUid();
-
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("UserProfile");
-
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("UserProfile").child(userid);
 
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
