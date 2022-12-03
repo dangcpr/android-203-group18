@@ -219,7 +219,7 @@ public class ProfileFragment extends Fragment {
                     Toast.makeText(getActivity(), "Failure" + error1.getMessage(), Toast.LENGTH_LONG).show();
                     error1.printStackTrace();
                 }
-                uploadImage();
+
             }
         });
 
@@ -230,7 +230,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-
 
         // upload image đã được tích hợp vào nút save ==> khi bấm save thì cả thông tin cá nhân và avatar cùng lúc được nạp lên firebase database
         btnUploadImg.setOnClickListener(new View.OnClickListener() {
