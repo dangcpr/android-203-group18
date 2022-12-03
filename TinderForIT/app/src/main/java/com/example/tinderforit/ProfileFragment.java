@@ -324,7 +324,7 @@ public class ProfileFragment extends Fragment {
                     if (map.get("lastName") != null) {
                         lastName = map.get("lastName").toString();
                         TlName.setText(lastName);
-                        LfName.getEditText().setText(lastName);
+                        LlName.getEditText().setText(lastName);
                     }
                     if (map.get("dateOfBirth") != null) {
                         dateOfBirth = map.get("dateOfBirth").toString();
