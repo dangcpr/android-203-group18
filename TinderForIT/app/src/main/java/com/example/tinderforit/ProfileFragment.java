@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,9 +28,13 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.ktx.Firebase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -80,7 +86,7 @@ public class ProfileFragment extends Fragment {
     Uri imageUri;
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
-    DatabaseReference mDatabase;
+    DatabaseReference mDatabase, dataUser;
     FirebaseAuth mAuth;
 
     public ProfileFragment() {
@@ -120,7 +126,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                                   Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
@@ -135,12 +141,39 @@ public class ProfileFragment extends Fragment {
         LDOB = (TextInputLayout) v.findViewById(R.id.layouttextDOB);
         TDOB = (TextInputEditText) v.findViewById(R.id.textDOB);
 
-        btnUploadImg = v.findViewById(R.id.uploadimage);
         avatar = v.findViewById(R.id.avatar);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        mDatabase.child("UserProfile").child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data: ", task.getException());
+                }
+                else {
+                    //Log.d("firebase", String.valueOf(task.getResult().child("imageUrl").getValue()));
+                    if(task.getResult().child("imageUrl").exists()) {
+                        try {
+                            Glide.with(getContext()).load(task.getResult().child("imageUrl").getValue().toString()).placeholder(R.drawable.noimage).into(avatar);
+                        } catch (Exception Ex){
+                            Toast.makeText(getContext(), "Lỗi hiển thị hình ảnh: " + Ex.toString(), Toast.LENGTH_SHORT);
+                        }
+                    }
+                    if (task.getResult().child("firstName").exists())
+                        LfName.getEditText().setText(String.valueOf(task.getResult().child("firstName").getValue()));
+                    if (task.getResult().child("lastName").exists())
+                        LlName.getEditText().setText(String.valueOf(task.getResult().child("lastName").getValue()));
+                    if (task.getResult().child("dateOfBirth").exists())
+                        LDOB.getEditText().setText(String.valueOf(task.getResult().child("dateOfBirth").getValue()));
+                    //avatar.setImageURI(Uri.parse(String.valueOf(task.getResult().child("imageUrl").getValue())));
+
+                }
+            }
+        });
+
 
         LDOB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,7 +235,10 @@ public class ProfileFragment extends Fragment {
                     UserProfile userProfile = new UserProfile(email, firstName, lastName, dateOfBirth);
 
                     mDatabase.child("UserProfile").child(userid).setValue(userProfile);
+                    uploadImage();
                     Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
+
+
                 } catch (Exception error1) {
                     Toast.makeText(getActivity(), "Failure" + error1.getMessage(), Toast.LENGTH_LONG).show();
                     error1.printStackTrace();
@@ -217,14 +253,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-
-        btnUploadImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadImage();
-            }
-        });
-
         return v;
     }
 

@@ -46,6 +46,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation 'com.google.firebase:firebase-database:20.1.0'
     implementation 'com.google.firebase:firebase-storage:20.1.0'
+    implementation 'com.google.firebase:firebase-common-ktx:20.2.0'
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
 
@@ -59,5 +60,8 @@ dependencies {
 
     implementation 'com.lorentzos.swipecards:library:1.0.9'
     implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
 }
