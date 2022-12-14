@@ -1,7 +1,16 @@
 package com.example.tinderforit;
 
 import android.app.DatePickerDialog;
+import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +19,29 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.ktx.Firebase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +61,7 @@ public class ProfileFragment extends Fragment {
     private String mParam2;
     private int GALlERY_REG_CODE = 1000 ;
 
-    private Button btnChooseimg;
+    private Button btnUploadImg;
 
     private String userid;
     private String email;
@@ -60,7 +81,13 @@ public class ProfileFragment extends Fragment {
 
     private Button btnSend;
 
+    private ImageView avatar;
 
+    Uri imageUri;
+
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    DatabaseReference mDatabase, dataUser;
+    FirebaseAuth mAuth;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -99,7 +126,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                                   Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
@@ -114,10 +141,39 @@ public class ProfileFragment extends Fragment {
         LDOB = (TextInputLayout) v.findViewById(R.id.layouttextDOB);
         TDOB = (TextInputEditText) v.findViewById(R.id.textDOB);
 
-        DatabaseReference mDatabase;
+        avatar = v.findViewById(R.id.avatar);
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        mDatabase.child("UserProfile").child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data: ", task.getException());
+                }
+                else {
+                    //Log.d("firebase", String.valueOf(task.getResult().child("imageUrl").getValue()));
+                    if(task.getResult().child("imageUrl").exists()) {
+                        try {
+                            Glide.with(getContext()).load(task.getResult().child("imageUrl").getValue().toString()).placeholder(R.drawable.noimage).into(avatar);
+                        } catch (Exception Ex){
+                            Toast.makeText(getContext(), "Lỗi hiển thị hình ảnh: " + Ex.toString(), Toast.LENGTH_SHORT);
+                        }
+                    }
+                    if (task.getResult().child("firstName").exists())
+                        LfName.getEditText().setText(String.valueOf(task.getResult().child("firstName").getValue()));
+                    if (task.getResult().child("lastName").exists())
+                        LlName.getEditText().setText(String.valueOf(task.getResult().child("lastName").getValue()));
+                    if (task.getResult().child("dateOfBirth").exists())
+                        LDOB.getEditText().setText(String.valueOf(task.getResult().child("dateOfBirth").getValue()));
+                    //avatar.setImageURI(Uri.parse(String.valueOf(task.getResult().child("imageUrl").getValue())));
+
+                }
+            }
+        });
+
 
         LDOB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,15 +235,100 @@ public class ProfileFragment extends Fragment {
                     UserProfile userProfile = new UserProfile(email, firstName, lastName, dateOfBirth);
 
                     mDatabase.child("UserProfile").child(userid).setValue(userProfile);
+                    uploadImage();
                     Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
+
+
                 } catch (Exception error1) {
                     Toast.makeText(getActivity(), "Failure" + error1.getMessage(), Toast.LENGTH_LONG).show();
                     error1.printStackTrace();
                 }
             }
         });
+
+        avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGetContent.launch("image/*");
+
+            }
+        });
         return v;
     }
+
+    private void uploadImage() {
+        // here we need to access the below result code but we can't
+        // So to solve it, we will take it as global
+        if (imageUri != null){
+            StorageReference reference = storage.getReference().child("Image/" + UUID.randomUUID().toString());
+            // we are creating a reference to store the image in firebase storage
+            // It will be stored inside images folder in firebase storage.
+            // You can use user auth id instead of uuid if your app has firebase auth
+            // Now using the below code we will store the file
+
+//            reference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+//                    if (task.isSuccessful()){
+//                        // Image uploaded successfully
+//                        Toast.makeText(getActivity(), "Image Uploaded successfully", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            });
+
+            reference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+
+                            mAuth = FirebaseAuth.getInstance();
+                            String userId;
+                            if (mAuth != null && mAuth.getCurrentUser() != null)
+                                userId = mAuth.getCurrentUser().getUid();
+                            else
+                                return;
+
+                            mDatabase = FirebaseDatabase.getInstance().getReference().child("UserProfile");
+
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("imageUrl", String.valueOf(uri));
+                            mDatabase.child(userId).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(getActivity(), "Add image successfully", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), "Add image failure", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
+    private ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri result) {
+                    // this result is the result of uri
+                    if (result != null){
+                        avatar.setImageURI(result);
+                        // result will be set in imageUri
+                        imageUri = result;
+                    }
+                }
+    });
+
 }
 
 @IgnoreExtraProperties

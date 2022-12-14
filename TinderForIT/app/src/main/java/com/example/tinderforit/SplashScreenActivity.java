@@ -4,11 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.Button;
 
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
 
 public class SplashScreenActivity extends Activity {
 
@@ -16,6 +22,10 @@ public class SplashScreenActivity extends Activity {
     private FirebaseAuth mAuth;
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
+
+    private Button Continue;
+    ImageSlider imageSlider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,14 +39,26 @@ public class SplashScreenActivity extends Activity {
 //                .build();
 //        gsc= GoogleSignIn.getClient(this,gso);
 
-        new Handler().postDelayed(new Runnable() {
+        Continue = findViewById(R.id.Continue);
+        imageSlider = findViewById(R.id.image_slider);
+
+        Continue.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
+            public void onClick(View v) {
                 Intent i = new Intent(SplashScreenActivity.this, Choose_Login_And_Reg.class);
                 startActivity(i);
-                finish();
             }
-        }, 1500);
+        });
+
+        ArrayList<SlideModel> slideModels = new ArrayList<>();
+
+        slideModels.add(new SlideModel(R.drawable.girl1, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.girl2, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.girl3, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.girl4, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.girl5, ScaleTypes.FIT));
+
+        imageSlider.setImageList(slideModels, ScaleTypes.FIT);
 
         //display user info
 

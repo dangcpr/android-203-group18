@@ -15,23 +15,11 @@
 
     <ImageView
         android:id="@+id/avatar"
-        android:layout_width="193dp"
-        android:layout_height="219dp"
+        android:layout_width="220dp"
+        android:layout_height="253dp"
         android:layout_gravity="center"
         android:contentDescription="No Image"
         android:src="@drawable/noimage" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/chooseimage"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="26dp"
-        android:background="@drawable/botron_button"
-        android:text="CHOOSE IMAGE"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layouttextFirstName"
