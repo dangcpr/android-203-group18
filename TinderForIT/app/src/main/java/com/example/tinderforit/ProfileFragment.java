@@ -183,7 +183,7 @@ public class ProfileFragment extends Fragment {
                                     try {
                                         Glide.with(getContext()).load(task.getResult().child("imageUrl").getValue().toString()).placeholder(R.drawable.noimage).into(avatar);
                                     } catch (Exception Ex){
-                                        Toast.makeText(getContext(), "Lỗi hiển thị hình ảnh: " + Ex.toString(), Toast.LENGTH_SHORT);
+                                        Toast.makeText(getContext(), "Lỗi  hiển thị hình ảnh: " + Ex.toString(), Toast.LENGTH_SHORT);
                                     }
                                 }
                                 if (task.getResult().child("firstName").exists())
