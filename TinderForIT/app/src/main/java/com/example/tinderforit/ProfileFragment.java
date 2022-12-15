@@ -3,13 +3,6 @@ package com.example.tinderforit;
 import android.app.DatePickerDialog;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +10,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,12 +29,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.ktx.Firebase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -43,6 +40,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.UUID;
 
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////// UNNECESSARY /////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ProfileFragment#newInstance} factory method to
@@ -54,40 +54,10 @@ public class ProfileFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    ImageView imgGallery;
-    Button btnGallery;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private int GALlERY_REG_CODE = 1000 ;
-
-    private Button btnUploadImg;
-
-    private String userid;
-    private String email;
-
-    private TextInputLayout LfName;
-    private TextInputEditText TfName;
-    private String firstName;
-
-    private TextInputLayout LlName;
-    private TextInputEditText TlName;
-    private String lastName;
-
-    DatePicker picker;
-    private TextInputEditText TDOB;
-    private TextInputLayout LDOB;
-    private String dateOfBirth;
-
-    private Button btnSend;
-
-    private ImageView avatar;
-
-    Uri imageUri;
-
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-    DatabaseReference mDatabase, dataUser;
-    FirebaseAuth mAuth;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -120,15 +90,53 @@ public class ProfileFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////// UNNECESSARY /////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 
+    ImageView imgGallery;
+    Button btnGallery;
+    private int GALlERY_REG_CODE = 1000 ;
 
+    private Button btnUploadImg;
 
+    private String userid;
+    private String email;
+
+    private TextInputLayout LfName;
+    private TextInputEditText TfName;
+    private String firstName;
+
+    private TextInputLayout LlName;
+    private TextInputEditText TlName;
+    private String lastName;
+
+    DatePicker picker;
+    private TextInputEditText TDOB;
+    private TextInputLayout LDOB;
+    private String dateOfBirth;
+
+    private Button btnSend;
+
+    private ImageView avatar;
+
+    private RadioButton radFemale;
+    private RadioButton radMale;
+    private String gender;
+
+    Uri imageUri;
+
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    DatabaseReference mDatabase, dataUser;
+    FirebaseAuth mAuth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                    Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        // Plumbing controls
 
         btnSend = (Button) v.findViewById(R.id.sendinfo);
 
@@ -141,39 +149,98 @@ public class ProfileFragment extends Fragment {
         LDOB = (TextInputLayout) v.findViewById(R.id.layouttextDOB);
         TDOB = (TextInputEditText) v.findViewById(R.id.textDOB);
 
+        radFemale = (RadioButton) v.findViewById(R.id.radio_female);
+        radMale = (RadioButton) v.findViewById(R.id.radio_male);
+
         avatar = v.findViewById(R.id.avatar);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        mDatabase.child("UserProfile").child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+
+        // Check if user has choose gender or not
+
+        // check if user is Female
+        mDatabase.child("UserProfile").child("Female").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data: ", task.getException());
+                if (!task.getResult().child(user.getUid()).exists()){
+                    // if not exist: this user is first time login -> let them input profile and click "Send"
                 }
-                else {
-                    //Log.d("firebase", String.valueOf(task.getResult().child("imageUrl").getValue()));
-                    if(task.getResult().child("imageUrl").exists()) {
-                        try {
-                            Glide.with(getContext()).load(task.getResult().child("imageUrl").getValue().toString()).placeholder(R.drawable.noimage).into(avatar);
-                        } catch (Exception Ex){
-                            Toast.makeText(getContext(), "Lỗi hiển thị hình ảnh: " + Ex.toString(), Toast.LENGTH_SHORT);
-                        }
-                    }
-                    if (task.getResult().child("firstName").exists())
-                        LfName.getEditText().setText(String.valueOf(task.getResult().child("firstName").getValue()));
-                    if (task.getResult().child("lastName").exists())
-                        LlName.getEditText().setText(String.valueOf(task.getResult().child("lastName").getValue()));
-                    if (task.getResult().child("dateOfBirth").exists())
-                        LDOB.getEditText().setText(String.valueOf(task.getResult().child("dateOfBirth").getValue()));
-                    //avatar.setImageURI(Uri.parse(String.valueOf(task.getResult().child("imageUrl").getValue())));
+                else { // if exist: get their data from Firebase and display
 
+                    // Get User's data from Firebase and Display on screen
+                    mDatabase.child("UserProfile").child("Female").child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if (!task.isSuccessful()) {
+                                Log.e("firebase", "Error getting data: ", task.getException());
+                            }
+                            else {
+                                //Log.d("firebase", String.valueOf(task.getResult().child("imageUrl").getValue()));
+                                if(task.getResult().child("imageUrl").exists()) {
+                                    try {
+                                        Glide.with(getContext()).load(task.getResult().child("imageUrl").getValue().toString()).placeholder(R.drawable.noimage).into(avatar);
+                                    } catch (Exception Ex){
+                                        Toast.makeText(getContext(), "Lỗi hiển thị hình ảnh: " + Ex.toString(), Toast.LENGTH_SHORT);
+                                    }
+                                }
+                                if (task.getResult().child("firstName").exists())
+                                    LfName.getEditText().setText(String.valueOf(task.getResult().child("firstName").getValue()));
+                                if (task.getResult().child("lastName").exists())
+                                    LlName.getEditText().setText(String.valueOf(task.getResult().child("lastName").getValue()));
+                                if (task.getResult().child("dateOfBirth").exists())
+                                    LDOB.getEditText().setText(String.valueOf(task.getResult().child("dateOfBirth").getValue()));
+                                //avatar.setImageURI(Uri.parse(String.valueOf(task.getResult().child("imageUrl").getValue())));
+                                radFemale.setChecked(true);
+                            }
+                        }
+                    });
+                }
+            }
+
+        });
+
+        // check if user is Male
+        mDatabase.child("UserProfile").child("Male").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.getResult().child(user.getUid()).exists()){
+                    // if not exist: this user is first time login -> let them input profile and click "Send"
+                }
+                else { // if exist: get their data from Firebase and display
+
+                    // Get User's data from Firebase and Display on screen
+                    mDatabase.child("UserProfile").child("Male").child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if (!task.isSuccessful()) {
+                                Log.e("firebase", "Error getting data: ", task.getException());
+                            }
+                            else {
+                                //Log.d("firebase", String.valueOf(task.getResult().child("imageUrl").getValue()));
+                                if(task.getResult().child("imageUrl").exists()) {
+                                    try {
+                                        Glide.with(getContext()).load(task.getResult().child("imageUrl").getValue().toString()).placeholder(R.drawable.noimage).into(avatar);
+                                    } catch (Exception Ex){
+                                        Toast.makeText(getContext(), "Lỗi hiển thị hình ảnh: " + Ex.toString(), Toast.LENGTH_SHORT);
+                                    }
+                                }
+                                if (task.getResult().child("firstName").exists())
+                                    LfName.getEditText().setText(String.valueOf(task.getResult().child("firstName").getValue()));
+                                if (task.getResult().child("lastName").exists())
+                                    LlName.getEditText().setText(String.valueOf(task.getResult().child("lastName").getValue()));
+                                if (task.getResult().child("dateOfBirth").exists())
+                                    LDOB.getEditText().setText(String.valueOf(task.getResult().child("dateOfBirth").getValue()));
+                                //avatar.setImageURI(Uri.parse(String.valueOf(task.getResult().child("imageUrl").getValue())));
+                                radMale.setChecked(true);
+                            }
+                        }
+                    });
                 }
             }
         });
-
 
         LDOB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,21 +276,36 @@ public class ProfileFragment extends Fragment {
                 datePickerDialog.show();
             }
         });
+
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
+                    // Check valid Input
+
                     if (TfName.getText().toString().isEmpty()) {
                         TfName.setError("First name is missing");
                         return;
                     }
+
                     if (TlName.getText().toString().isEmpty()) {
                         TfName.setError("Last name is missing");
                         return;
                     }
+
                     if (TDOB.getText().toString().isEmpty()) {
                         TDOB.setError("Last name is missing");
                         return;
+                    }
+
+                    // Get input Value
+
+                    if (radFemale.isChecked()){
+                        gender = "Female";
+                    }
+
+                    if (radMale.isChecked()){
+                        gender = "Male";
                     }
 
                     firstName = String.valueOf(LfName.getEditText().getText());
@@ -232,13 +314,40 @@ public class ProfileFragment extends Fragment {
                     email = user.getEmail();
                     userid = user.getUid();
 
+                    // Check if user has already existed in another data branch (another gender child)
+
+                    String oppositeGender;
+
+                    if (gender == "Female"){
+                        oppositeGender = "Male";
+                    }
+                    else {
+                        oppositeGender = "Female";
+                    }
+
+                    mDatabase.child("UserProfile").child(oppositeGender).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+                                 if(task.getResult().child(user.getUid()).exists()){
+                                     // if exist in another child -> delete
+                                     mDatabase.child("UserProfile").child(oppositeGender).child(user.getUid()).removeValue();
+                                 }
+                        }
+                    });
+
+                    // Upload Object(user) to Firebase
+
                     UserProfile userProfile = new UserProfile(email, firstName, lastName, dateOfBirth);
 
-                    mDatabase.child("UserProfile").child(userid).setValue(userProfile);
+                    mDatabase.child("UserProfile").child(gender).child(userid).setValue(userProfile);
+
+                    // Upload Image and Update Image Url
+
                     uploadImage();
-                    Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
 
-
+                    // Finish
+                    Toast.makeText(getActivity(), "Updated Successfully", Toast.LENGTH_LONG).show();
                 } catch (Exception error1) {
                     Toast.makeText(getActivity(), "Failure" + error1.getMessage(), Toast.LENGTH_LONG).show();
                     error1.printStackTrace();
@@ -296,7 +405,7 @@ public class ProfileFragment extends Fragment {
 
                             HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("imageUrl", String.valueOf(uri));
-                            mDatabase.child(userId).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            mDatabase.child(gender).child(userId).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Toast.makeText(getActivity(), "Add image successfully", Toast.LENGTH_SHORT).show();
