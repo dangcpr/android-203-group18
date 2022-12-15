@@ -3,6 +3,7 @@ package com.example.tinderforit;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -306,6 +307,7 @@ public class Choose_Login_And_Reg extends Activity {
         }
     }
     private void handleFacebookAccessToken(AccessToken token) {
+        Log.d("Token: ", "Token: " + token);
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(Choose_Login_And_Reg.this, new OnCompleteListener<AuthResult>() {

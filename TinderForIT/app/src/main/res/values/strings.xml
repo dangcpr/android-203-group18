@@ -24,9 +24,8 @@
 
 
     <string name="facebook_app_id">493645662814443</string>
-    <string name="fb_login_protocol_scheme">fb1188099738580896</string>
-    <string name="facebook_client_token">8f64aaefb6214e70452be1d8b3213dda</string>
+    <string name="fb_login_protocol_scheme">fb493645662814443</string>
+    <string name="facebook_client_token">fb4b834878117427edfe0012f4e3ddf9</string>
 
 
->>>>>>> SiDuc
 </resources>
