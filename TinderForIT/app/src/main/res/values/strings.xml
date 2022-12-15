@@ -10,9 +10,10 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
-    <string name="facebook_app_id">493645662814443</string>
-    <string name="fb_login_protocol_scheme">fb493645662814443</string>
-    <string name="facebook_client_token">357e4f4afabbef2aacacc17f97f79c66</string>
+
+<!--    <string name="facebook_app_id">493645662814443</string>-->
+<!--    <string name="fb_login_protocol_scheme">fb493645662814443</string>-->
+<!--    <string name="facebook_client_token">357e4f4afabbef2aacacc17f97f79c66</string>-->
 
     <string name="action_home">Home</string>
     <string name="action_chat">Chat</string>
@@ -20,4 +21,12 @@
     <string name="action_matches">Matches</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="facebook_app_id">493645662814443</string>
+    <string name="fb_login_protocol_scheme">fb1188099738580896</string>
+    <string name="facebook_client_token">8f64aaefb6214e70452be1d8b3213dda</string>
+
+
+>>>>>>> SiDuc
 </resources>
