@@ -27,9 +27,6 @@
             android:name=".LoginGoogleActivity"
             android:exported="false" />
         <activity
-            android:name=".VerifyEmailActivity"
-            android:exported="false" />
-        <activity
             android:name=".LoginPhoneActivity"
             android:exported="false" />
         <activity
