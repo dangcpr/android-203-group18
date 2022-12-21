@@ -59,22 +59,18 @@ public class Choose_Login_And_Reg extends Activity {
         if(currentUser != null){
             currentUser.reload();
         }
-        gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        gsc= GoogleSignIn.getClient(this,gso);
 
         //login facebook
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mCallbackManager = CallbackManager.Factory.create();
-                //loginButton.setReadPermissions("email", "public_profile");
+                loginButton.setPermissions(Arrays.asList("email","public_profile"));
                 loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         Toast.makeText(Choose_Login_And_Reg.this,"Login Facebook success",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Choose_Login_And_Reg.this  ,String.valueOf(loginResult.getAccessToken()),Toast.LENGTH_LONG).show();
                         handleFacebookAccessToken(loginResult.getAccessToken());
                     }
                     @Override
@@ -101,7 +97,7 @@ public class Choose_Login_And_Reg extends Activity {
         mLoginFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginWithFacebook();
+                loginButton.callOnClick();
             }
         });
 
@@ -122,13 +118,12 @@ public class Choose_Login_And_Reg extends Activity {
 
     }
 
-    private void LoginWithFacebook() {
-        //login with google account
-        //when you click on facebook icon call loginButton.setOnClickListener();
-        loginButton.callOnClick();
-    }
-
     private  void LoginWithGoogle(){
+        gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        gsc= GoogleSignIn.getClient(this,gso);
         //login with google account
         Intent signIntent=gsc.getSignInIntent();
         startActivityForResult(signIntent,RC_SIGN_IN);
@@ -177,8 +172,9 @@ public class Choose_Login_And_Reg extends Activity {
     }
     private void handleFacebookAccessToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(Choose_Login_And_Reg.this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
