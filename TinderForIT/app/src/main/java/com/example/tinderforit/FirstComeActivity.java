@@ -3,6 +3,7 @@ package com.example.tinderforit;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -294,5 +295,15 @@ public class FirstComeActivity extends Activity {
                         }
                     });
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences sharePref = getSharedPreferences("DetectUser",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharePref.edit();
+        editor.putString("Detect","newUser");
+        editor.apply();
+        editor.commit();
     }
 }
