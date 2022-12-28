@@ -25,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
@@ -181,6 +182,8 @@ public class HomeFragment extends Fragment {
 
                 array.remove(0);
                 myAppAdapter.notifyDataSetChanged();
+
+                isMatchWith(personID);
             }
 
             @Override
@@ -224,6 +227,25 @@ public class HomeFragment extends Fragment {
         super.onStop();
         array.clear();
         myAppAdapter.notifyDataSetChanged();
+    }
+
+    private void isMatchWith(String personID) {
+        DatabaseReference currentConnectionDb = usersDB.child(userGender).child(currentUser.getUid()).child("Connection").child("Like").child(personID);
+        currentConnectionDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@androidx.annotation.NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    Log.e("new Match","true");
+                    usersDB.child(oppositeGender).child(snapshot.getKey()).child("Connection").child("Match").child(currentUser.getUid()).setValue(true);
+                    usersDB.child(userGender).child(currentUser.getUid()).child("Connection").child("Match").child(snapshot.getKey()).setValue(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(@androidx.annotation.NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void checkUserGender() {
