@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tinderforit.R;
+import com.example.tinderforit.chat.Chat;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -57,7 +58,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
         holder.l_rootLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent=new Intent(context, Chat.class);
+                intent.putExtra("userUID",list.getUserUID());
+                intent.putExtra("userChatKey",list.getUserChatKey());
+                intent.putExtra("userProfileURL",list.getUserProfileURL());
+                intent.putExtra("userName",list.getUserName());
 
+                context.startActivity(intent);
             }
         });
     }
