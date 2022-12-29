@@ -18,6 +18,19 @@
         android:gravity="right">
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnMessages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="26dp"
+            android:layout_marginBottom="26dp"
+            android:background="@drawable/botron_button"
+            android:text="Messages"
+            android:textColor="@color/white"
+            android:layout_marginEnd="20dp"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,7 +38,7 @@
             android:layout_marginTop="26dp"
             android:layout_marginBottom="26dp"
             android:background="@drawable/botron_button"
-            android:text="Log Out"
+            android:text="Logout"
             android:textColor="@color/white"
             android:textAllCaps="false"
             android:textStyle="bold" />

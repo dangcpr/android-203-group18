@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.tinderforit.messages.Messages;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -21,10 +22,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends Activity {
 
-    Button btnLogOut;
+    Button btnLogOut, btnMessages;
     private FirebaseAuth mAuth;
-    GoogleSignInOptions gso;
     GoogleSignInClient gsc;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,42 +33,27 @@ public class MainActivity extends Activity {
 
         //connect firebase and google login request
         mAuth=FirebaseAuth.getInstance();
-        gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        gsc= GoogleSignIn.getClient(this,gso);
-        /*
-        new Handler().postDelayed(new Runnable() {
+
+        btnLogOut=findViewById(R.id.btnLogout);
+        btnMessages=findViewById(R.id.btnMessages);
+
+
+
+
+        btnMessages.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                Intent i = new Intent(MainActivity.this, Choose_Login_And_Reg.class);
-                startActivity(i);
-                finish();
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this, Messages.class);
+                startActivity(intent);
             }
-        }, 1500);
-         */
-        //display user info
-
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        if (acct != null) {
-            String personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
-            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
-            //show email address
-            Toast.makeText(MainActivity.this,personEmail,Toast.LENGTH_SHORT).show();
-        }
-
-        btnLogOut=(Button) findViewById(R.id.btnLogout);
+        });
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LogOut();
             }
         });
+
     }
 
     private void LogOut(){
