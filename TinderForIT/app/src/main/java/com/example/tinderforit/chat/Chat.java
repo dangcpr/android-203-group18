@@ -75,19 +75,28 @@ public class Chat extends Activity {
         chattingRecyclerView.setLayoutManager(new LinearLayoutManager(Chat.this));
         chatAdapter=new ChatAdapter(chatLists,Chat.this);
         chattingRecyclerView.setAdapter(chatAdapter);
-
         //set last time seen msg
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int countMsg =(int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
-                databaseReference.child("Chat").child(getChatKey).child("FirstUID").child("seenMsg").setValue(countMsg);
+                //set profile pic to images view.
+                if (snapshot.child("UserProfile").child("Female").hasChild(getUIDCurrentUser)) {
+                    int countMsg =(int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
+                    databaseReference.child("UserProfile").child("Female").child(getUIDCurrentUser).child("Connection").child("Match").child(getUID).setValue(countMsg);
+                }
+                else{
+                    int countMsg =(int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
+                    databaseReference.child("UserProfile").child("Male").child(getUIDCurrentUser).child("Connection").child("Match").child(getUID).setValue(countMsg);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+        //set last time seen msg
+
+
         //set adapter msg
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -97,10 +106,11 @@ public class Chat extends Activity {
                 }
                 chatLists.clear();
                 if (snapshot.hasChild("Chat")) {
-                    final String getFirstUID= snapshot.child("Chat").child(getChatKey).child("FirstUID").child("UID").getValue(String.class);
-                    final String getSecondUID= snapshot.child("Chat").child(getChatKey).child("SecondUID").child("UID").getValue(String.class);
+                    final String getFirstUID= snapshot.child("Chat").child(getChatKey).child("FirstUID").getValue(String.class);
+                    final String getSecondUID= snapshot.child("Chat").child(getChatKey).child("SecondUID").getValue(String.class);
                     if (snapshot.child("Chat").child(getChatKey).hasChild("Messages")){
                         chatLists.clear();
+
                         if((getFirstUID.equals(getUID) && getSecondUID.equals(getUIDCurrentUser)) || (getSecondUID.equals(getUID) && getFirstUID.equals(getUIDCurrentUser))) {
                             for (DataSnapshot messagesSnapshot : snapshot.child("Chat").child(getChatKey).child("Messages").getChildren()) {
                                 if (messagesSnapshot.hasChild("msg") && messagesSnapshot.hasChild("FromUID")) {
@@ -155,8 +165,8 @@ public class Chat extends Activity {
                     final String messagesFromUID=mAuth.getUid();
                     final String messagesToUID=getUID;
 
-                    databaseReference.child("Chat").child(getChatKey).child("FirstUID").child("UID").setValue(messagesFromUID);
-                    databaseReference.child("Chat").child(getChatKey).child("SecondUID").child("UID").setValue(messagesToUID);
+                    databaseReference.child("Chat").child(getChatKey).child("FirstUID").setValue(messagesFromUID);
+                    databaseReference.child("Chat").child(getChatKey).child("SecondUID").setValue(messagesToUID);
                     databaseReference.child("Chat").child(getChatKey).child("Messages").child(currentTimestamp).child("FromUID").setValue(mAuth.getUid());
                     databaseReference.child("Chat").child(getChatKey).child("Messages").child(currentTimestamp).child("msg").setValue(getChatMessage);
 
@@ -166,11 +176,19 @@ public class Chat extends Activity {
                     chatAdapter.updateChatList(chatLists);
                     chattingRecyclerView.scrollToPosition(chatLists.size() - 1);
                     //update last time users seen msg
+                    //set last time seen msg
                     databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            int countMsg =(int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
-                            databaseReference.child("Chat").child(getChatKey).child("FirstUID").child("seenMsg").setValue(countMsg);
+                            //set profile pic to images view.
+                            if (snapshot.child("UserProfile").child("Female").hasChild(getUIDCurrentUser)) {
+                                int countMsg =(int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
+                                databaseReference.child("UserProfile").child("Female").child(getUIDCurrentUser).child("Connection").child("Match").child(getUID).setValue(countMsg);
+                            }
+                            else{
+                                int countMsg =(int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
+                                databaseReference.child("UserProfile").child("Male").child(getUIDCurrentUser).child("Connection").child("Match").child(getUID).setValue(countMsg);
+                            }
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {

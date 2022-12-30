@@ -110,22 +110,18 @@ public class Messages extends Activity {
                                     for (DataSnapshot chatKeyDataSnapshot:snapshot.child("Chat").getChildren()){
                                         if(chatKeyDataSnapshot.hasChild("FirstUID")&&chatKeyDataSnapshot.hasChild("SecondUID")&&chatKeyDataSnapshot.hasChild("Messages")){
 
-                                            final String getFirstUid=chatKeyDataSnapshot.child("FirstUID").child("UID").getValue(String.class);
-                                            final String getSecondUid =chatKeyDataSnapshot.child("SecondUID").child("UID").getValue(String.class);
+                                            final String getFirstUid=chatKeyDataSnapshot.child("FirstUID").getValue(String.class);
+                                            final String getSecondUid =chatKeyDataSnapshot.child("SecondUID").getValue(String.class);
 
                                             assert getFirstUid != null;
                                             if((getFirstUid.equals(userUIDMatched) && getSecondUid.equals(getUIDCurrentUser)) || (getFirstUid.equals(getUIDCurrentUser) && getSecondUid.equals(userUIDMatched)) ){
                                                 getChatKey=chatKeyDataSnapshot.getKey();
                                                 for(DataSnapshot chatDataSnapshot:chatKeyDataSnapshot.child("Messages").getChildren()){
                                                     int countMsg = (int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
-                                                    int lastMsgSeen;
-                                                    if (getFirstUid.equals(getUIDCurrentUser))
-                                                        lastMsgSeen=snapshot.child("Chat").child(getChatKey).child("FirstUID").child("seenMsg").getValue(Integer.class);
-                                                    else lastMsgSeen=snapshot.child("Chat").child(getChatKey).child("SecondUID").child("seenMsg").getValue(Integer.class);
+                                                    int lastMsgSeen =(int) snapshot.child("UserProfile").child(getGender).child(getUIDCurrentUser).child("Connection").child("Match").child(userUIDMatched).getValue(Integer.class);
 
 
                                                     getSeenMassage=(countMsg-lastMsgSeen);
-
                                                     getLastMessage=chatDataSnapshot.child("msg").getValue(String.class);
                                                 }
                                             }

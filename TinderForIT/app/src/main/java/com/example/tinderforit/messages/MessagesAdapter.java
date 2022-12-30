@@ -63,7 +63,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
                 intent.putExtra("userChatKey",list.getUserChatKey());
                 intent.putExtra("userProfileURL",list.getUserProfileURL());
                 intent.putExtra("userName",list.getUserName());
-
                 context.startActivity(intent);
             }
         });
