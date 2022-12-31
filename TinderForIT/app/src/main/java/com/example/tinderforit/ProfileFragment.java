@@ -31,14 +31,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.UUID;
+import java.util.Map;
 
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// UNNECESSARY /////////////////////////////
@@ -129,6 +128,7 @@ public class ProfileFragment extends Fragment {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     DatabaseReference mDatabase, dataUser;
     FirebaseAuth mAuth;
+    FirebaseUser user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -156,94 +156,56 @@ public class ProfileFragment extends Fragment {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
+        ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri result) {
+                        // this result is the result of uri
+                        if (result != null){
+                            avatar.setImageURI(result);
+                            // result will be set in imageUri
+                            imageUri = result;
+                        }
+                    }
+                });
 
-        // Check if user has choose gender or not
-
-        // check if user is Female
-        mDatabase.child("UserProfile").child("Female").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        // Display data
+        mDatabase.child("UserProfile").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.getResult().child(user.getUid()).exists()){
-                    // if not exist: this user is first time login -> let them input profile and click "Send"
-                }
-                else { // if exist: get their data from Firebase and display
-
                     // Get User's data from Firebase and Display on screen
-                    mDatabase.child("UserProfile").child("Female").child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
                             if (!task.isSuccessful()) {
                                 Log.e("firebase", "Error getting data: ", task.getException());
                             }
                             else {
-                                //Log.d("firebase", String.valueOf(task.getResult().child("imageUrl").getValue()));
-                                if(task.getResult().child("imageUrl").exists()) {
+                                Log.e("firebase", "Connect UserProfile");
+                                if(task.getResult().child(user.getUid()).child("imageUrl").exists()) {
                                     try {
-                                        Glide.with(getContext()).load(task.getResult().child("imageUrl").getValue().toString()).placeholder(R.drawable.noimage).into(avatar);
-                                        // needed, if not: in case user don't do anything with avatar, imageUri = null -> delete uri in database
-                                        imageUri = Uri.parse(task.getResult().child("imageUrl").getValue().toString());
+                                        Glide.with(getContext()).load(task.getResult().child(user.getUid()).child("imageUrl").getValue().toString()).into(avatar);
                                     } catch (Exception Ex){
                                         Toast.makeText(getContext(), "Lỗi  hiển thị hình ảnh: " + Ex.toString(), Toast.LENGTH_SHORT);
                                     }
                                 }
-                                if (task.getResult().child("firstName").exists())
-                                    LfName.getEditText().setText(String.valueOf(task.getResult().child("firstName").getValue()));
-                                if (task.getResult().child("lastName").exists())
-                                    LlName.getEditText().setText(String.valueOf(task.getResult().child("lastName").getValue()));
-                                if (task.getResult().child("dateOfBirth").exists())
-                                    LDOB.getEditText().setText(String.valueOf(task.getResult().child("dateOfBirth").getValue()));
-                                //avatar.setImageURI(Uri.parse(String.valueOf(task.getResult().child("imageUrl").getValue())));
-                                radFemale.setChecked(true);
-                            }
-                        }
-                    });
-                }
-            }
-
-        });
-
-        // check if user is Male
-        mDatabase.child("UserProfile").child("Male").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.getResult().child(user.getUid()).exists()){
-                    // if not exist: this user is first time login -> let them input profile and click "Send"
-                }
-                else { // if exist: get their data from Firebase and display
-
-                    // Get User's data from Firebase and Display on screen
-                    mDatabase.child("UserProfile").child("Male").child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            if (!task.isSuccessful()) {
-                                Log.e("firebase", "Error getting data: ", task.getException());
-                            }
-                            else {
-                                //Log.d("firebase", String.valueOf(task.getResult().child("imageUrl").getValue()));
-                                if(task.getResult().child("imageUrl").exists()) {
-                                    try {
-                                        Glide.with(getContext()).load(task.getResult().child("imageUrl").getValue().toString()).placeholder(R.drawable.noimage).into(avatar);
-                                        // needed, if not: in case user don't do anything with avatar, imageUri = null -> delete uri in database
-                                        imageUri = Uri.parse(task.getResult().child("imageUrl").getValue().toString());
-                                    } catch (Exception Ex){
-                                        Toast.makeText(getContext(), "Lỗi hiển thị hình ảnh: " + Ex.toString(), Toast.LENGTH_SHORT);
+                                if (task.getResult().child(user.getUid()).child("firstName").exists())
+                                    LfName.getEditText().setText(String.valueOf(task.getResult().child(user.getUid()).child("firstName").getValue()));
+                                if (task.getResult().child(user.getUid()).child("lastName").exists())
+                                    LlName.getEditText().setText(String.valueOf(task.getResult().child(user.getUid()).child("lastName").getValue()));
+                                if (task.getResult().child(user.getUid()).child("dateOfBirth").exists())
+                                    LDOB.getEditText().setText(String.valueOf(task.getResult().child(user.getUid()).child("dateOfBirth").getValue()));
+                                if (task.getResult().child(user.getUid()).child("gender").exists())
+                                {
+                                    if (task.getResult().child(user.getUid()).child("gender").getValue().toString().equals("Female")) {
+                                        radFemale.setChecked(true);
+                                    } else{
+                                        radMale.setChecked(true);
                                     }
                                 }
-                                if (task.getResult().child("firstName").exists())
-                                    LfName.getEditText().setText(String.valueOf(task.getResult().child("firstName").getValue()));
-                                if (task.getResult().child("lastName").exists())
-                                    LlName.getEditText().setText(String.valueOf(task.getResult().child("lastName").getValue()));
-                                if (task.getResult().child("dateOfBirth").exists())
-                                    LDOB.getEditText().setText(String.valueOf(task.getResult().child("dateOfBirth").getValue()));
-                                //avatar.setImageURI(Uri.parse(String.valueOf(task.getResult().child("imageUrl").getValue())));
-                                radMale.setChecked(true);
+
                             }
-                        }
-                    });
                 }
-            }
+
         });
 
         LDOB.setOnClickListener(new View.OnClickListener() {
@@ -318,33 +280,17 @@ public class ProfileFragment extends Fragment {
                     email = user.getEmail();
                     userid = user.getUid();
 
-                    // Check if user has already existed in another data branch (another gender child)
-
-                    String oppositeGender;
-
-                    if (gender == "Female"){
-                        oppositeGender = "Male";
-                    }
-                    else {
-                        oppositeGender = "Female";
-                    }
-
-                    mDatabase.child("UserProfile").child(oppositeGender).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-
-                                 if(task.getResult().child(user.getUid()).exists()){
-                                     // if exist in another child -> delete
-                                     mDatabase.child("UserProfile").child(oppositeGender).child(user.getUid()).removeValue();
-                                 }
-                        }
-                    });
 
                     // Upload Object(user) to Firebase
 
-                    UserProfile userProfile = new UserProfile(email, firstName, lastName, dateOfBirth);
+                    Map userProfile = new HashMap();
+                    userProfile.put("email",email);
+                    userProfile.put("firstName",firstName);
+                    userProfile.put("lastName",lastName);
+                    userProfile.put("dateOfBirth",dateOfBirth);
+                    userProfile.put("gender",gender);
 
-                    mDatabase.child("UserProfile").child(gender).child(userid).setValue(userProfile);
+                    mDatabase.child("UserProfile").child(userid).updateChildren(userProfile);
 
                     // Upload Image and Update Image Url
 
@@ -370,26 +316,9 @@ public class ProfileFragment extends Fragment {
     } // onCreate
 
     private void uploadImage() {
-        // here we need to access the below result code but we can't
-        // So to solve it, we will take it as global
-        if (imageUri != null){
-            StorageReference reference = storage.getReference().child("Image/" + UUID.randomUUID().toString());
-            // we are creating a reference to store the image in firebase storage
-            // It will be stored inside images folder in firebase storage.
-            // You can use user auth id instead of uuid if your app has firebase auth
-            // Now using the below code we will store the file
 
-//            reference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-//                    if (task.isSuccessful()){
-//                        // Image uploaded successfully
-//                        Toast.makeText(getActivity(), "Image Uploaded successfully", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            });
+        if (imageUri != null){
+            StorageReference reference = storage.getReference().child("Image/" + user.getUid());
 
             reference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -409,7 +338,7 @@ public class ProfileFragment extends Fragment {
 
                             HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("imageUrl", String.valueOf(uri));
-                            mDatabase.child(gender).child(userId).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            mDatabase.child(userId).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Toast.makeText(getActivity(), "Add image successfully", Toast.LENGTH_SHORT).show();
@@ -427,40 +356,5 @@ public class ProfileFragment extends Fragment {
                         }
                     });
         }
-    }
-
-    private ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
-            new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri result) {
-                    // this result is the result of uri
-                    if (result != null){
-                        avatar.setImageURI(result);
-                        // result will be set in imageUri
-                        imageUri = result;
-                    }
-                }
-    });
-
-}
-
-@IgnoreExtraProperties
-class UserProfile {
-
-    public String userid;
-    public String email;
-    public String firstName;
-    public String lastName;
-    public String dateOfBirth;
-
-    public UserProfile() {
-        // Default constructor required for calls to DataSnapshot.getValue(User.class)
-    }
-
-    public UserProfile(String email, String firstName, String lastName, String dateOfBirth) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
     }
 }

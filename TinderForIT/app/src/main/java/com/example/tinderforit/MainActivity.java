@@ -5,6 +5,8 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -75,5 +77,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    
+    public void replaceToCongratMatchedFragments(CongratMatchedFragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_bottom, R.anim.fade_out);
+        fragmentTransaction.replace(R.id.card_frame, fragment);
+        fragmentTransaction.commit();
+    }
+
+    public void replaceToHomeFragments(HomeFragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_bottom, R.anim.fade_out);
+        fragmentTransaction.replace(R.id.card_frame, fragment);
+        fragmentTransaction.commit();
+    }
+
+    public void replaceToChatFragments(ChatFragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_bottom, R.anim.fade_out);
+        fragmentTransaction.replace(R.id.card_frame, fragment);
+        fragmentTransaction.commit();
+    }
 }
