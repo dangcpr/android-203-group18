@@ -6,10 +6,70 @@
     tools:context=".ChatFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Chat"
-        android:textSize="50dp"/>
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chat"
+            android:textSize="50dp"/>
+                    <Button
+                        android:id="@+id/butGetCall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Connect"></Button>
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical"-->
+<!--            android:padding="20dp">-->
+<!--            &lt;!&ndash; Button to connect to Sendbird &ndash;&gt;-->
+<!--            <Button-->
+<!--                android:id="@+id/butConnect"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:text="Connect"></Button>-->
+<!--            &lt;!&ndash; Button for making a call &ndash;&gt;-->
+<!--            <Button-->
+<!--                android:id="@+id/butMakeCall"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:text="Make Call"></Button>-->
+
+<!--            &lt;!&ndash;-->
+<!--                SENDBIRD VIDEO VIEW-->
+<!--            &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:orientation="vertical">-->
+<!--                &lt;!&ndash; Remote video &ndash;&gt;-->
+<!--                <com.sendbird.calls.SendBirdVideoView-->
+<!--                    android:id="@+id/video_view_fullscreen"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="0dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_margin="32dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:visibility="gone" />-->
+<!--                &lt;!&ndash; My video &ndash;&gt;-->
+<!--                <com.sendbird.calls.SendBirdVideoView-->
+<!--                    android:id="@+id/video_view_small"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="0dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_margin="32dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:visibility="gone" />-->
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
+    </LinearLayout>
 
 </FrameLayout>

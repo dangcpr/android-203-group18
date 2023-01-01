@@ -182,8 +182,10 @@ public class ProfileFragment extends Fragment {
                                 if(task.getResult().child("imageUrl").exists()) {
                                     try {
                                         Glide.with(getContext()).load(task.getResult().child("imageUrl").getValue().toString()).placeholder(R.drawable.noimage).into(avatar);
+                                        // needed, if not: in case user don't do anything with avatar, imageUri = null -> delete uri in database
+                                        imageUri = Uri.parse(task.getResult().child("imageUrl").getValue().toString());
                                     } catch (Exception Ex){
-                                        Toast.makeText(getContext(), "Lỗi hiển thị hình ảnh: " + Ex.toString(), Toast.LENGTH_SHORT);
+                                        Toast.makeText(getContext(), "Lỗi  hiển thị hình ảnh: " + Ex.toString(), Toast.LENGTH_SHORT);
                                     }
                                 }
                                 if (task.getResult().child("firstName").exists())
@@ -223,6 +225,8 @@ public class ProfileFragment extends Fragment {
                                 if(task.getResult().child("imageUrl").exists()) {
                                     try {
                                         Glide.with(getContext()).load(task.getResult().child("imageUrl").getValue().toString()).placeholder(R.drawable.noimage).into(avatar);
+                                        // needed, if not: in case user don't do anything with avatar, imageUri = null -> delete uri in database
+                                        imageUri = Uri.parse(task.getResult().child("imageUrl").getValue().toString());
                                     } catch (Exception Ex){
                                         Toast.makeText(getContext(), "Lỗi hiển thị hình ảnh: " + Ex.toString(), Toast.LENGTH_SHORT);
                                     }
@@ -363,7 +367,7 @@ public class ProfileFragment extends Fragment {
             }
         });
         return v;
-    }
+    } // onCreate
 
     private void uploadImage() {
         // here we need to access the below result code but we can't

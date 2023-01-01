@@ -1,23 +1,25 @@
 package com.example.tinderforit;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 
 public class LoginEmailActivity extends Activity {
     private Button mLogin;
@@ -30,6 +32,11 @@ public class LoginEmailActivity extends Activity {
 
     private FirebaseAuth mAuth;
     private Context context;
+
+    String detect;
+
+    DatabaseReference mDatabase;
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,12 @@ public class LoginEmailActivity extends Activity {
         context = getApplicationContext();
 
         mAuth = FirebaseAuth.getInstance();
+
+        // Get from VerifyEmail Activity
+        Bundle extras = getIntent().getExtras();
+        if (extras != null){
+            detect = extras.getString("Detect");
+        }
 
         mForgetPass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,13 +107,32 @@ public class LoginEmailActivity extends Activity {
                                     // Check is verified email
                                     if(!mAuth.getCurrentUser().isEmailVerified()){
                                         Intent i = new Intent(LoginEmailActivity.this, VerifyEmailActivity.class);
+                                        i.putExtra("Detect",detect);
                                         startActivity(i);
                                         finish();
                                     } else {
                                         Toast.makeText(LoginEmailActivity.this, "Login is successful", Toast.LENGTH_LONG).show();
-                                        Intent i = new Intent(LoginEmailActivity.this, MainActivity.class);
-                                        startActivity(i);
-                                        finish();
+
+                                        // Check if user is new
+                                        if (!TextUtils.isEmpty(detect)) {
+                                            if (detect.equals("newUser")) {
+                                                Log.e("Login; is user new:", "True");
+                                                Intent i = new Intent(LoginEmailActivity.this, FirstComeActivity.class);
+                                                startActivity(i);
+                                                finish();
+                                            } else {
+                                                Log.e("Login; is user new:", "False");
+                                                Intent i = new Intent(LoginEmailActivity.this, MainActivity.class);
+                                                startActivity(i);
+                                                finish();
+                                            }
+                                        }
+                                        else {
+                                            Log.e("NULL", "NULL");
+                                            Intent i = new Intent(LoginEmailActivity.this, MainActivity.class);
+                                            startActivity(i);
+                                            finish();
+                                        }
                                     }
                                 }
                                 else {

@@ -3,28 +3,29 @@ package com.example.tinderforit;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.Handler;
+//import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
@@ -79,32 +80,37 @@ public class HomeFragment extends Fragment {
         }
     }
 
+
+    String firstName;
+    String lastName;
+    String DOB;
+    String avatar;
+    String email;
+    public String userGender;
+    public String oppositeGender;
+
+    private DatabaseReference usersDB;
+    private FirebaseUser currentUser;
+
+    ArrayList<Data> array = new ArrayList<>();
+    MyAppAdapter myAppAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
-        ArrayAdapter<Object> arrayAdapter;
-        List<String> dataFirstName = null;
-        List<String> dataLastname = null;
-        List<String> dataDOB = null;
-        List<String> dataAvatar = null;
+
         SwipeFlingAdapterView filingAdapterView;
-
-        MyAppAdapter myAppAdapter;
-        ViewHolder viewHolder;
-        ArrayList<Data> array;
-
         filingAdapterView = (SwipeFlingAdapterView)v.findViewById(R.id.swipe);
 
-        array = new ArrayList<>();
+        ViewHolder viewHolder;
         myAppAdapter = new MyAppAdapter(array, getContext());
 
-        DatabaseReference mDatabase;
+        usersDB = FirebaseDatabase.getInstance().getReference().child("UserProfile");
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("UserProfile");
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
+        /*
         mDatabase.addValueEventListener(new ValueEventListener() {
             String firstName = "";
             String lastName = "";
@@ -112,8 +118,6 @@ public class HomeFragment extends Fragment {
             String avatar = "";
             String email = "";
             String emailCurrent = user.getEmail();
-
-
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -140,52 +144,55 @@ public class HomeFragment extends Fragment {
                 myAppAdapter.notifyDataSetChanged();
             }
 
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
                 Log.w("onCancelled", "loadPost:onCancelled", databaseError.toException());
                 // ...
             }
-        });
+        });*/
 
-        Log.e("E: ", String.valueOf(array.size()));
 
         filingAdapterView.setAdapter(myAppAdapter);
         filingAdapterView.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
-                //Do something on the left!
-                //You also have access to the original object.
-                //If you want to use it just cast it (String) dataObject
+
             }
 
             @Override
             public void onLeftCardExit(Object o) {
-                Data d = array.get(0);
-                array.add(d);
+                // Dislike case
+                Data person = array.get(0);
+                String personID = person.getUID();
+                Log.e("Dislike",personID);
+                usersDB.child(oppositeGender).child(personID).child("Connection").child("Dislike").child(currentUser.getUid()).setValue(true);
+
                 array.remove(0);
                 myAppAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onRightCardExit(Object o) {
-                Data d = array.get(0);
-                array.add(d);
+                // Like case
+                Data person = array.get(0);
+                String personID = person.getUID();
+                Log.e("Like",personID);
+                usersDB.child(oppositeGender).child(personID).child("Connection").child("Like").child(currentUser.getUid()).setValue(true);
+
                 array.remove(0);
                 myAppAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onAdapterAboutToEmpty(int i) {
-
             }
 
             @Override
             public void onScroll(float v) {
-
             }
         });
+
 
         filingAdapterView.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
@@ -195,16 +202,138 @@ public class HomeFragment extends Fragment {
         });
 
         return v;
+    } // onCreateView
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // get user gender
+        checkUserGender();
+
+        // wait for checkUserGender() finish
+        Handler handler = new Handler();
+        boolean b = handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getOppositeGenderData();
+            }
+        },2000);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        array.clear();
+        myAppAdapter.notifyDataSetChanged();
+    }
+
+    public void checkUserGender() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        DatabaseReference maleDB = FirebaseDatabase.getInstance().getReference().child("UserProfile").child("Male");
+        maleDB.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if (snapshot.getKey().equals(user.getUid())){
+                    userGender = "Male";
+                    oppositeGender = "Female";
+                }
+            }
+            @Override
+            public void onChildChanged(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            @Override
+            public void onChildRemoved(@androidx.annotation.NonNull DataSnapshot snapshot) {}
+            @Override
+            public void onChildMoved(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            @Override
+            public void onCancelled(@androidx.annotation.NonNull DatabaseError error) {}
+        });
+
+        DatabaseReference femaleDB = FirebaseDatabase.getInstance().getReference().child("UserProfile").child("Female");
+        femaleDB.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if (snapshot.getKey().equals(user.getUid())){
+                    userGender = "Female";
+                    oppositeGender = "Male";
+                }
+            }
+            @Override
+            public void onChildChanged(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            @Override
+            public void onChildRemoved(@androidx.annotation.NonNull DataSnapshot snapshot) {}
+            @Override
+            public void onChildMoved(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            @Override
+            public void onCancelled(@androidx.annotation.NonNull DatabaseError error) {}
+        });
+    } // checkUserGender
+
+    public void getOppositeGenderData(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference oppositeGenderDB = FirebaseDatabase.getInstance().getReference().child("UserProfile").child(oppositeGender);
+
+        oppositeGenderDB.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if (snapshot.exists()
+                        && !snapshot.getKey().equals(user.getUid()) // Don't show user data on match card
+                        && !snapshot.getKey().equals("Token") // Don't show test Token
+                        && !snapshot.child("Connection").child("Dislike").hasChild(currentUser.getUid()) // Don't show people whom user disliked
+                        && !snapshot.child("Connection").child("Like").hasChild(currentUser.getUid()))  // Don't show people whom user liked
+                {
+
+                    if(snapshot.child("firstName").exists()){
+                        firstName = snapshot.child("firstName").getValue().toString() + " ";
+                    }
+
+                    if(snapshot.child("lastName").exists()){
+                        lastName = snapshot.child("lastName").getValue().toString();
+                    }
+
+                    if(snapshot.child("dateOfBirth").exists()){
+                        DOB = snapshot.child("dateOfBirth").getValue().toString();
+                    }
+
+                    if(snapshot.child("imageUrl").exists()){
+                        avatar = snapshot.child("imageUrl").getValue().toString();
+                    }
+
+                    if(snapshot.child("email").exists()){
+                        email = snapshot.child("email").getValue().toString();
+                    }
+
+                    array.add(new Data(snapshot.getKey(),firstName, lastName, DOB, avatar));
+
+                    myAppAdapter.notifyDataSetChanged();
+
+                    avatar=""; // avatar like a "global" var in this fragment -> must clear before get next person data
+
+                    Log.e("size",String.valueOf(myAppAdapter.getCount()));
+                    Log.e("Debug: ", firstName + " " + lastName + " " + DOB + " " + avatar);
+                }
+            }
+            @Override
+            public void onChildChanged(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            @Override
+            public void onChildRemoved(@androidx.annotation.NonNull DataSnapshot snapshot) {}
+            @Override
+            public void onChildMoved(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            @Override
+            public void onCancelled(@androidx.annotation.NonNull DatabaseError error) {}
+        });
     }
 }
+
+
+
+///////////////////////////////////////////////////////////// Other Classes///////////////////////////////////////
 
 class ViewHolder {
     public static FrameLayout background;
     TextView matchname;
     TextView matchDOB;
     ImageView matchavatar;
-
-
 }
 class MyAppAdapter extends BaseAdapter {
 
@@ -215,7 +344,6 @@ class MyAppAdapter extends BaseAdapter {
         this.parkingList = apps;
         this.context = context;
     }
-
 
     @Override
     public int getCount() {
@@ -231,7 +359,6 @@ class MyAppAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-
 
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -262,17 +389,21 @@ class MyAppAdapter extends BaseAdapter {
 
 class Data {
 
+    private String UID;
     private String dataFirstName;
     private String dataLastname;
     private String dataDOB;
     private String dataAvatar;
 
-    public Data(String dataFirstName, String dataLastname, String dataDOB, String dataAvatar) {
+    public Data(String UID, String dataFirstName, String dataLastname, String dataDOB, String dataAvatar) {
+        this.UID = UID;
         this.dataFirstName = dataFirstName;
         this.dataLastname = dataLastname;
         this.dataDOB = dataDOB;
         this.dataAvatar = dataAvatar;
     }
+
+    public String getUID(){return UID;}
 
     public String getDataFirstName() {
         return dataFirstName;
@@ -289,5 +420,4 @@ class Data {
     public String getdataAvatar() {
         return dataAvatar;
     }
-
 }
