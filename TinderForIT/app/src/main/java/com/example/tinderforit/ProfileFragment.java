@@ -247,6 +247,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 try {
+                    // Disable button temporarily to prevent runtime error (enable when firebase update successfully)
+                    btnSend.setEnabled(false);
                     // Check valid Input
 
                     if (TfName.getText().toString().isEmpty()) {
@@ -298,6 +300,12 @@ public class ProfileFragment extends Fragment {
 
                     // Finish
                     Toast.makeText(getActivity(), "Updated Successfully", Toast.LENGTH_LONG).show();
+
+                    // UnFocus
+                    TlName.clearFocus();
+                    TfName.clearFocus();
+                    TDOB.clearFocus();;
+
                 } catch (Exception error1) {
                     Toast.makeText(getActivity(), "Failure" + error1.getMessage(), Toast.LENGTH_LONG).show();
                     error1.printStackTrace();
@@ -356,5 +364,7 @@ public class ProfileFragment extends Fragment {
                         }
                     });
         }
+
+        btnSend.setEnabled(true);
     }
 }

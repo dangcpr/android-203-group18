@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CongratMatchedFragment">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#E9000000">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#E9000000">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,6 +58,7 @@
                 android:gravity="center">
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnToChatFrag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/btn_match_fragment"
@@ -68,13 +66,14 @@
                     android:textAllCaps="false"
                     android:textSize="20sp"
                     android:textColor="@color/white"
-                    android:paddingHorizontal="60dp"
+                    android:paddingHorizontal="70dp"
                     android:paddingVertical="10dp"
                     android:layout_marginBottom="30dp"
                     android:drawableLeft="@drawable/ic_message"
                     android:drawablePadding="20dp"/>
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnToHomeFrag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/btn_match_fragment"
@@ -92,6 +91,4 @@
 
         </LinearLayout>
 
-    </ScrollView>
-
-</FrameLayout>
+</ScrollView>

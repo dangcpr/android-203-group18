@@ -86,6 +86,7 @@ public class HomeFragment extends Fragment {
     String DOB;
     String avatar;
     String email;
+
     public String userGender;
     public String oppositeGender;
 
@@ -111,17 +112,6 @@ public class HomeFragment extends Fragment {
 
         usersDB = FirebaseDatabase.getInstance().getReference().child("UserProfile");
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        btnTest = v.findViewById(R.id.backbtn);
-
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CongratMatchedFragment congratMatchedFragment = new CongratMatchedFragment();
-                ((MainActivity) getActivity()).replaceToCongratMatchedFragments(congratMatchedFragment);
-            }
-        });
-
 
         filingAdapterView.setAdapter(myAppAdapter);
         filingAdapterView.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
@@ -200,8 +190,9 @@ public class HomeFragment extends Fragment {
                     usersDB.child(snapshot.getKey()).child("Connection").child("Match").child(currentUser.getUid()).setValue(true);
                     usersDB.child(currentUser.getUid()).child("Connection").child("Match").child(snapshot.getKey()).setValue(true);
                     // Change MatchFragment
-                    CongratMatchedFragment congratMatchedFragment = new CongratMatchedFragment();
-                    ((MainActivity) getActivity()).replaceToCongratMatchedFragments(congratMatchedFragment);
+
+                    ((MainActivity) getActivity()).onMsgFromFragToMain("HomeFragment", currentUser.getUid() + "," + snapshot.getKey());
+                    ((MainActivity) getActivity()).replaceToCongratMatchedFragments();
                 }
                 else {
                     // just one-way like
@@ -214,7 +205,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    public void checkUserGender(){
+    public int checkUserGender(){
         DatabaseReference userDb = usersDB.child(currentUser.getUid());
         userDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -243,60 +234,65 @@ public class HomeFragment extends Fragment {
             public void onCancelled(@androidx.annotation.NonNull DatabaseError error) {
 
             }
+
         });
+        return 1;
     }
 
     public void getOppositeGenderData(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        usersDB.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.exists()
-                        && !snapshot.getKey().equals(user.getUid()) // Don't show user data on match card
-                        && !snapshot.child("Connection").child("Dislike").hasChild(currentUser.getUid()) // Don't show people whom user disliked
-                        && !snapshot.child("Connection").child("Like").hasChild(currentUser.getUid())  // Don't show people whom user liked
-                        &&  snapshot.child("gender").getValue().toString().equals(oppositeGender))
-                {
+        {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            usersDB.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    if (snapshot.exists()
+                            && !snapshot.getKey().equals(user.getUid()) // Don't show user data on match card
+                            && !snapshot.child("Connection").child("Dislike").hasChild(currentUser.getUid()) // Don't show people whom user disliked
+                            && !snapshot.child("Connection").child("Like").hasChild(currentUser.getUid())  // Don't show people whom user liked
+                            &&  snapshot.child("gender").getValue().toString().equals(oppositeGender))
+                    {
 
-                    if(snapshot.child("firstName").exists()){
-                        firstName = snapshot.child("firstName").getValue().toString() + " ";
+                        if(snapshot.child("firstName").exists()){
+                            firstName = snapshot.child("firstName").getValue().toString() + " ";
+                        }
+
+                        if(snapshot.child("lastName").exists()){
+                            lastName = snapshot.child("lastName").getValue().toString();
+                        }
+
+                        if(snapshot.child("dateOfBirth").exists()){
+                            DOB = snapshot.child("dateOfBirth").getValue().toString();
+                        }
+
+                        if(snapshot.child("imageUrl").exists()){
+                            avatar = snapshot.child("imageUrl").getValue().toString();
+                        }
+
+                        if(snapshot.child("email").exists()){
+                            email = snapshot.child("email").getValue().toString();
+                        }
+
+                        array.add(new Data(snapshot.getKey(),firstName, lastName, DOB, avatar));
+
+                        myAppAdapter.notifyDataSetChanged();
+
+                        avatar=""; // avatar like a "global" var in this fragment -> must clear before get next person data
+
+                        Log.e("size",String.valueOf(myAppAdapter.getCount()));
+                        Log.e("Debug: ", firstName + " " + lastName + " " + DOB + " " + avatar);
                     }
-
-                    if(snapshot.child("lastName").exists()){
-                        lastName = snapshot.child("lastName").getValue().toString();
-                    }
-
-                    if(snapshot.child("dateOfBirth").exists()){
-                        DOB = snapshot.child("dateOfBirth").getValue().toString();
-                    }
-
-                    if(snapshot.child("imageUrl").exists()){
-                        avatar = snapshot.child("imageUrl").getValue().toString();
-                    }
-
-                    if(snapshot.child("email").exists()){
-                        email = snapshot.child("email").getValue().toString();
-                    }
-
-                    array.add(new Data(snapshot.getKey(),firstName, lastName, DOB, avatar));
-
-                    myAppAdapter.notifyDataSetChanged();
-
-                    avatar=""; // avatar like a "global" var in this fragment -> must clear before get next person data
-
-                    Log.e("size",String.valueOf(myAppAdapter.getCount()));
-                    Log.e("Debug: ", firstName + " " + lastName + " " + DOB + " " + avatar);
                 }
-            }
-            @Override
-            public void onChildChanged(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-            @Override
-            public void onChildRemoved(@androidx.annotation.NonNull DataSnapshot snapshot) {}
-            @Override
-            public void onChildMoved(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-            @Override
-            public void onCancelled(@androidx.annotation.NonNull DatabaseError error) {}
-        });
+                @Override
+                public void onChildChanged(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+                @Override
+                public void onChildRemoved(@androidx.annotation.NonNull DataSnapshot snapshot) {}
+                @Override
+                public void onChildMoved(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+                @Override
+                public void onCancelled(@androidx.annotation.NonNull DatabaseError error) {}
+            });
+
+        }
     }
 }
 
