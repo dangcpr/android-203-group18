@@ -66,14 +66,9 @@ public class Messages extends Activity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //set profile pic to images view.
-                if (snapshot.child("UserProfile").child("Female").hasChild(getUIDCurrentUser)) {
-                    getGender="Female";
-                    final  String userProfileUrl = snapshot.child("UserProfile").child("Female").child(getUIDCurrentUser).child("imageUrl").getValue(String.class);
-                    Picasso.get().load(userProfileUrl).into(userPicture);
-                }
-                else{
-                    getGender="Male";
-                    final String userProfileUrl = snapshot.child("UserProfile").child("Male").child(getUIDCurrentUser).child("imageUrl").getValue(String.class);
+                assert getUIDCurrentUser != null;
+                final  String userProfileUrl = snapshot.child("UserProfile").child(getUIDCurrentUser).child("imageUrl").getValue(String.class);
+                if (userProfileUrl!=null) {
                     Picasso.get().load(userProfileUrl).into(userPicture);
                 }
             }
@@ -87,18 +82,15 @@ public class Messages extends Activity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 messagesLists.clear();
-                if (getGender.equals("Female"))
-                    getGenderMatch="Male";
-                else getGenderMatch="Female";
                 assert getUIDCurrentUser != null;
-                for (DataSnapshot dataSnapshot : snapshot.child("UserProfile").child(getGender).child(getUIDCurrentUser).child("Connection").child("Match").getChildren()) {
+                for (DataSnapshot dataSnapshot : snapshot.child("UserProfile").child(getUIDCurrentUser).child("Connection").child("Match").getChildren()) {
                     final String userUIDMatched = dataSnapshot.getKey();
 
                     if (!Objects.equals(mAuth.getUid(), userUIDMatched)) {
                         assert userUIDMatched != null;
-                        String userName = snapshot.child("UserProfile").child(getGenderMatch).child(userUIDMatched).child("lastName").getValue(String.class)+" "+
-                                snapshot.child("UserProfile").child(getGenderMatch).child(userUIDMatched).child("firstName").getValue(String.class);
-                        String userProfileURL = snapshot.child("UserProfile").child(getGenderMatch).child(userUIDMatched).child("imageUrl").getValue(String.class);
+                        String userName = snapshot.child("UserProfile").child(userUIDMatched).child("lastName").getValue(String.class)+" "+
+                                snapshot.child("UserProfile").child(userUIDMatched).child("firstName").getValue(String.class);
+                        String userProfileURL = snapshot.child("UserProfile").child(userUIDMatched).child("imageUrl").getValue(String.class);
                         databaseReference.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -118,8 +110,7 @@ public class Messages extends Activity {
                                                 getChatKey=chatKeyDataSnapshot.getKey();
                                                 for(DataSnapshot chatDataSnapshot:chatKeyDataSnapshot.child("Messages").getChildren()){
                                                     int countMsg = (int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
-                                                    int lastMsgSeen =(int) snapshot.child("UserProfile").child(getGender).child(getUIDCurrentUser).child("Connection").child("Match").child(userUIDMatched).getValue(Integer.class);
-
+                                                    int lastMsgSeen =(int) snapshot.child("UserProfile").child(getUIDCurrentUser).child("Connection").child("Match").child(userUIDMatched).getValue(Integer.class);
 
                                                     getSeenMassage=(countMsg-lastMsgSeen);
                                                     getLastMessage=chatDataSnapshot.child("msg").getValue(String.class);

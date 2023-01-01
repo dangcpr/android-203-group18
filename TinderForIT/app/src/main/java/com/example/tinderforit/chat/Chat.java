@@ -79,15 +79,8 @@ public class Chat extends Activity {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //set profile pic to images view.
-                if (snapshot.child("UserProfile").child("Female").hasChild(getUIDCurrentUser)) {
-                    int countMsg =(int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
-                    databaseReference.child("UserProfile").child("Female").child(getUIDCurrentUser).child("Connection").child("Match").child(getUID).setValue(countMsg);
-                }
-                else{
-                    int countMsg =(int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
-                    databaseReference.child("UserProfile").child("Male").child(getUIDCurrentUser).child("Connection").child("Match").child(getUID).setValue(countMsg);
-                }
+                int countMsg =(int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
+                databaseReference.child("UserProfile").child(getUIDCurrentUser).child("Connection").child("Match").child(getUID).setValue(countMsg);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -180,15 +173,8 @@ public class Chat extends Activity {
                     databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            //set profile pic to images view.
-                            if (snapshot.child("UserProfile").child("Female").hasChild(getUIDCurrentUser)) {
-                                int countMsg =(int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
-                                databaseReference.child("UserProfile").child("Female").child(getUIDCurrentUser).child("Connection").child("Match").child(getUID).setValue(countMsg);
-                            }
-                            else{
-                                int countMsg =(int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
-                                databaseReference.child("UserProfile").child("Male").child(getUIDCurrentUser).child("Connection").child("Match").child(getUID).setValue(countMsg);
-                            }
+                            int countMsg =(int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
+                            databaseReference.child("UserProfile").child(messagesFromUID).child("Connection").child("Match").child(getUID).setValue(countMsg);
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
