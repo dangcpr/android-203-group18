@@ -3,6 +3,7 @@ package com.example.tinderforit;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -114,21 +115,23 @@ public class LoginEmailActivity extends Activity {
                                         Toast.makeText(LoginEmailActivity.this, "Login is successful", Toast.LENGTH_LONG).show();
 
                                         // Check if user is new
-                                        if (!TextUtils.isEmpty(detect)) {
-                                            if (detect.equals("newUser")) {
-                                                Log.e("Login; is user new:", "True");
+                                        if (!TextUtils.isEmpty(detect))
+                                        {
+                                            if (detect.equals("newUser")){
+                                                Log.e("Login; is user new:","True");
                                                 Intent i = new Intent(LoginEmailActivity.this, FirstComeActivity.class);
                                                 startActivity(i);
                                                 finish();
-                                            } else {
-                                                Log.e("Login; is user new:", "False");
+                                            }
+                                            else {
+                                                Log.e("Login; is user new:","False");
                                                 Intent i = new Intent(LoginEmailActivity.this, MainActivity.class);
                                                 startActivity(i);
                                                 finish();
                                             }
                                         }
                                         else {
-                                            Log.e("NULL", "NULL");
+                                            Log.e("Login; is user new:","False");
                                             Intent i = new Intent(LoginEmailActivity.this, MainActivity.class);
                                             startActivity(i);
                                             finish();
@@ -159,5 +162,9 @@ public class LoginEmailActivity extends Activity {
         if (currentUser != null) {
             currentUser.reload();
         }
-    }
+
+        // Get detect result (send from FirstComActivity inCase user get out FirstComeActivity before clicking "Send")
+        SharedPreferences sharedPref =  getPreferences(MODE_PRIVATE);
+        detect = sharedPref.getString("Detect",detect);
+     }
 }

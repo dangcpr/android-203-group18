@@ -3,6 +3,7 @@ package com.example.tinderforit;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,15 +16,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -32,7 +30,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.UUID;
+import java.util.Map;
 
 public class FirstComeActivity extends Activity {
 
@@ -71,6 +69,7 @@ public class FirstComeActivity extends Activity {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     DatabaseReference mDatabase, dataUser;
     FirebaseAuth mAuth;
+    FirebaseUser user;
 
 
     @Override
@@ -98,7 +97,7 @@ public class FirstComeActivity extends Activity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
 
         LDOB.setOnClickListener(new View.OnClickListener() {
@@ -173,33 +172,16 @@ public class FirstComeActivity extends Activity {
                     email = user.getEmail();
                     userid = user.getUid();
 
-                    // Check if user has already existed in another data branch (another gender child)
-
-                    String oppositeGender;
-
-                    if (gender == "Female"){
-                        oppositeGender = "Male";
-                    }
-                    else {
-                        oppositeGender = "Female";
-                    }
-
-                    mDatabase.child("UserProfile").child(oppositeGender).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-
-                            if(task.getResult().child(user.getUid()).exists()){
-                                // if exist in another child -> delete
-                                mDatabase.child("UserProfile").child(oppositeGender).child(user.getUid()).removeValue();
-                            }
-                        }
-                    });
-
                     // Upload Object(user) to Firebase
 
-                    UserProfile userProfile = new UserProfile(email, firstName, lastName, dateOfBirth);
+                    Map userProfile = new HashMap();
+                    userProfile.put("email",email);
+                    userProfile.put("firstName",firstName);
+                    userProfile.put("lastName",lastName);
+                    userProfile.put("dateOfBirth",dateOfBirth);
+                    userProfile.put("gender",gender);
 
-                    mDatabase.child("UserProfile").child(gender).child(userid).setValue(userProfile);
+                    mDatabase.child("UserProfile").child(userid).setValue(userProfile);
 
                     // Upload Image and Update Image Url
 
@@ -237,26 +219,8 @@ public class FirstComeActivity extends Activity {
     }
 
     private void uploadImage() {
-        // here we need to access the below result code but we can't
-        // So to solve it, we will take it as global
         if (imageUri != null){
-            StorageReference reference = storage.getReference().child("Image/" + UUID.randomUUID().toString());
-            // we are creating a reference to store the image in firebase storage
-            // It will be stored inside images folder in firebase storage.
-            // You can use user auth id instead of uuid if your app has firebase auth
-            // Now using the below code we will store the file
-
-//            reference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-//                    if (task.isSuccessful()){
-//                        // Image uploaded successfully
-//                        Toast.makeText(getActivity(), "Image Uploaded successfully", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            });
+            StorageReference reference = storage.getReference().child("Image/" + user.getUid());
 
             reference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -276,7 +240,7 @@ public class FirstComeActivity extends Activity {
 
                                     HashMap<String, Object> hashMap = new HashMap<>();
                                     hashMap.put("imageUrl", String.valueOf(uri));
-                                    mDatabase.child(gender).child(userId).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    mDatabase.child(userId).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
                                             Toast.makeText(FirstComeActivity.this, "Add image successfully", Toast.LENGTH_SHORT).show();
@@ -294,5 +258,22 @@ public class FirstComeActivity extends Activity {
                         }
                     });
         }
+        else { // imgUri == null
+            Map userProfile = new HashMap();
+            userProfile.put("imageUrl","https://firebasestorage.googleapis.com/v0/b/tinder-it-e576d.appspot.com/o/defaultAvatar.png?alt=media&token=a3e00442-9f63-4463-ab6e-31910a768c88");
+
+            DatabaseReference mDatabase_2 = FirebaseDatabase.getInstance().getReference();
+            mDatabase_2.child("UserProfile").child(user.getUid()).updateChildren(userProfile);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences sharePref = getSharedPreferences("DetectUser",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharePref.edit();
+        editor.putString("Detect","newUser");
+        editor.apply();
+        editor.commit();
     }
 }
