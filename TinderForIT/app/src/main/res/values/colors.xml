@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#E94057</color>
     <color name="color_selected_bottom_nav">#FFEB3B</color>
+    <color name="gray">#787878</color>
+    <color name="light_primary_30">#4DE94057</color>
 </resources>
