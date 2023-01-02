@@ -1,27 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
-    <FrameLayout
-        android:id="@+id/card_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_nav" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/image_splash_screen"
+        android:layout_gravity="center"
+        android:src="@drawable/tinder_logo"/>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/menu_bottom_nav"
-        app:itemBackground="@color/primary"
-        app:itemIconTint="@color/custom_color_bottom_nav"
-        app:itemTextColor="@color/custom_color_bottom_nav"
-        app:itemIconSize="50dp"
-        tools:ignore="MissingConstraints"/>
+        android:gravity="right">
 
-</RelativeLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnMessages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="26dp"
+            android:layout_marginBottom="26dp"
+            android:background="@drawable/botron_button"
+            android:text="Messages"
+            android:textColor="@color/white"
+            android:layout_marginEnd="20dp"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="26dp"
+            android:layout_marginBottom="26dp"
+            android:background="@drawable/botron_button"
+            android:text="Logout"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</FrameLayout>
