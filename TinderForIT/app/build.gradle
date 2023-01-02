@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.tinderforit"
-        minSdk 28
+        minSdk 21
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -67,5 +67,8 @@ dependencies {
 
     // Circle Image
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
+
 
 }
