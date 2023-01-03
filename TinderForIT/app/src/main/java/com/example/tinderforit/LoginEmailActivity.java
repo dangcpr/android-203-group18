@@ -118,13 +118,15 @@ public class LoginEmailActivity extends Activity {
                                         if (!TextUtils.isEmpty(detect))
                                         {
                                             if (detect.equals("newUser")){
-                                                Log.e("Login; is user new:","True");
+                                                Log.e("detect",detect);
+                                                Log.e("Login; is user new","True");
                                                 Intent i = new Intent(LoginEmailActivity.this, FirstComeActivity.class);
                                                 startActivity(i);
                                                 finish();
                                             }
                                             else {
-                                                Log.e("Login; is user new:","False");
+                                                Log.e("detect",detect);
+                                                Log.e("Login; is user new","False");
                                                 Intent i = new Intent(LoginEmailActivity.this, MainActivity.class);
                                                 startActivity(i);
                                                 finish();
@@ -166,5 +168,16 @@ public class LoginEmailActivity extends Activity {
         // Get detect result (send from FirstComActivity inCase user get out FirstComeActivity before clicking "Send")
         SharedPreferences sharedPref =  getPreferences(MODE_PRIVATE);
         detect = sharedPref.getString("Detect",detect);
+
      }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Get detect result (send from FirstComActivity inCase user get out FirstComeActivity before clicking "Send")
+        SharedPreferences sharedPref =  getPreferences(MODE_PRIVATE);
+        detect = sharedPref.getString("Detect",detect);
+
+    }
 }
