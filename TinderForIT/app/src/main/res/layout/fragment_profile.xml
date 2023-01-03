@@ -117,10 +117,20 @@
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="26dp"
-            android:layout_marginBottom="26dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/botron_button"
             android:text="SEND"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/logout_button"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="26dp"
+            android:background="@drawable/botron_button"
+            android:text="Logout"
             android:textColor="@color/white"
             android:textStyle="bold" />
     </LinearLayout>

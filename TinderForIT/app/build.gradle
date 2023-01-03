@@ -50,6 +50,17 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:20.1.0'
     implementation 'com.google.firebase:firebase-common-ktx:20.2.0'
 
+    implementation 'com.firebaseui:firebase-ui-database:8.0.2'
+
+    // FirebaseUI for Cloud Firestore
+    implementation 'com.firebaseui:firebase-ui-firestore:8.0.2'
+
+    // FirebaseUI for Firebase Auth
+    implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
+
+    // FirebaseUI for Cloud Storage
+    implementation 'com.firebaseui:firebase-ui-storage:8.0.2'
+    
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
 
@@ -76,5 +87,16 @@ dependencies {
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    // Sendbird
+    // [Calls] FCM
+    implementation 'com.google.firebase:firebase-core:21.1.1'
+    // [Calls] FCM
+    implementation 'com.google.firebase:firebase-messaging:23.1.1'
+
+    //implementation 'com.sendbird.sdk:sendbird-android-sdk:3.1.22'
+    implementation 'com.sendbird.sdk:sendbird-calls:1.8.0'
+    implementation 'com.sendbird.sdk:sendbird-chat:4.0.9'
+
 
 }

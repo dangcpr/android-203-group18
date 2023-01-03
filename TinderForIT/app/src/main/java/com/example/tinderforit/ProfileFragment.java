@@ -44,6 +44,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.firebase.ui.auth.AuthUI;
+
+import com.sendbird.android.poll.PollVoteEvent;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Console;
@@ -128,6 +131,7 @@ public class ProfileFragment extends Fragment {
     private String dateOfBirth;
 
     private Button btnSend;
+    private Button btnLogout;
 
     private ImageView avatar;
 
@@ -149,8 +153,8 @@ public class ProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
         // Plumbing controls
-
         btnSend = (Button) v.findViewById(R.id.sendinfo);
+        btnLogout = (Button) v.findViewById(R.id.logout_button);
 
         TfName = (TextInputEditText) v.findViewById(R.id.textFirstName);
         LfName = (TextInputLayout) v.findViewById(R.id.layouttextFirstName);
@@ -292,6 +296,7 @@ public class ProfileFragment extends Fragment {
                     lastName = String.valueOf(LlName.getEditText().getText());
                     dateOfBirth = String.valueOf(LDOB.getEditText().getText());
                     email = user.getEmail();
+
                     userid = user.getUid();
 
 
@@ -333,6 +338,27 @@ public class ProfileFragment extends Fragment {
                 showPictureDialog();
 
             }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AuthUI.getInstance()
+                        .signOut(getContext())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    // user is now signed out
+                                    Toast.makeText(getContext(), "Current user is logged out", Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(getActivity(), Choose_Login_And_Reg.class));
+                                    getActivity().finish();
+                                }
+                                else
+                                    Toast.makeText(getContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+            }
+
         });
         return v;
     } // onCreate
@@ -446,5 +472,7 @@ public class ProfileFragment extends Fragment {
                 }
             }
     );
+
+
 
 }

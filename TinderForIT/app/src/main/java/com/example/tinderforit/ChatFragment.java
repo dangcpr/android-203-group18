@@ -3,6 +3,9 @@ package com.example.tinderforit;
 
 
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
+import android.content.Intent;
 import android.os.Bundle;
 
 
@@ -12,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,6 +60,8 @@ public class ChatFragment extends Fragment {
 
     private String getChatKey;
     private String getUID;
+
+    private Button butGetCall;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -118,6 +124,8 @@ public class ChatFragment extends Fragment {
         final  String getUserProfile= bundle.getString("userProfileURL");
         getChatKey= bundle.getString("userChatKey");
         getUID= bundle.getString("userUID");
+
+
         txt_username.setText(getUserName);
         Picasso.get().load(getUserProfile).into(ptr_userProfile);
         //Recycler view
@@ -235,6 +243,16 @@ public class ChatFragment extends Fragment {
             }
         });
 
+        //Phím thực hiện cuộc gọi
+        butGetCall = (Button) view.findViewById(R.id.butGetCall);
+        butGetCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity().getBaseContext(), CallActivity.class);
+                i.putExtra("userUID_Call", getUID);
+                getActivity().startActivity(i);
+            }
+        });
 
         return view;
     }

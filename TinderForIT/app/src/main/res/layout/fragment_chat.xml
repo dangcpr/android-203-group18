@@ -3,68 +3,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ChatFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:id="@+id/l_user"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="85dp">
+
             <ImageView
                 android:id="@+id/btn_arrowBack"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
+                android:layout_centerVertical="true"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="20dp"
+                android:background="@drawable/botron_button"
                 android:paddingStart="12sp"
                 android:paddingEnd="2sp"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="40dp"
-                android:src="@drawable/ic_arrow_back"
-                android:background="@drawable/botron_button"
-                />
+                android:src="@drawable/ic_arrow_back" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ptr_userProfile"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="40dp"
+                android:layout_centerVertical="true"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="20dp"
-                android:layout_centerVertical="true"
-                android:src="@drawable/img_default"
-                android:layout_toEndOf="@+id/btn_arrowBack"/>
+                android:layout_toEndOf="@+id/btn_arrowBack"
+                android:src="@drawable/img_default" />
+
             <LinearLayout
-                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_toEndOf="@+id/ptr_userProfile">
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/ptr_userProfile"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/txt_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="User Name"
                     android:maxLines="1"
+                    android:text="User Name"
                     android:textColor="@color/black"
                     android:textSize="18dp"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/txt_userStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Status"
-                    android:maxLines="1"
-                    android:textColor="@color/gray"
-                    android:textSize="13dp"
                     android:layout_marginTop="5dp"
-                    />
+                    android:maxLines="1"
+                    android:text="Status"
+                    android:textColor="@color/gray"
+                    android:textSize="13dp" />
+
             </LinearLayout>
+
+            <Button
+                android:id="@+id/butGetCall"
+                android:layout_width="52dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="285dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_toEndOf="@+id/btn_arrowBack"
+                android:background="@drawable/phone_call"
+                app:backgroundTint="@color/primary" />
         </RelativeLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_messages"
             android:layout_width="match_parent"
