@@ -1,8 +1,15 @@
 package com.example.tinderforit;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +24,12 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.ActionMenuItem;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,7 +44,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.firebase.ui.auth.AuthUI;
 
+import com.sendbird.android.poll.PollVoteEvent;
+
+import java.io.ByteArrayOutputStream;
+import java.io.Console;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -116,6 +131,7 @@ public class ProfileFragment extends Fragment {
     private String dateOfBirth;
 
     private Button btnSend;
+    private Button btnLogout;
 
     private ImageView avatar;
 
@@ -137,8 +153,8 @@ public class ProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
         // Plumbing controls
-
         btnSend = (Button) v.findViewById(R.id.sendinfo);
+        btnLogout = (Button) v.findViewById(R.id.logout_button);
 
         TfName = (TextInputEditText) v.findViewById(R.id.textFirstName);
         LfName = (TextInputLayout) v.findViewById(R.id.layouttextFirstName);
@@ -280,6 +296,7 @@ public class ProfileFragment extends Fragment {
                     lastName = String.valueOf(LlName.getEditText().getText());
                     dateOfBirth = String.valueOf(LDOB.getEditText().getText());
                     email = user.getEmail();
+
                     userid = user.getUid();
 
 
@@ -316,9 +333,32 @@ public class ProfileFragment extends Fragment {
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mGetContent.launch("image/*");
+//                mGetContent.launch("image/*");
+
+                showPictureDialog();
 
             }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AuthUI.getInstance()
+                        .signOut(getContext())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    // user is now signed out
+                                    Toast.makeText(getContext(), "Current user is logged out", Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(getActivity(), Choose_Login_And_Reg.class));
+                                    getActivity().finish();
+                                }
+                                else
+                                    Toast.makeText(getContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+            }
+
         });
         return v;
     } // onCreate
@@ -364,7 +404,75 @@ public class ProfileFragment extends Fragment {
                         }
                     });
         }
-
         btnSend.setEnabled(true);
     }
+
+
+
+    private void showPictureDialog(){
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(getContext());
+        pictureDialog.setTitle("Select Action");
+        String[] pictureDialogItems = {
+                "Select photo from gallery",
+                "Capture photo from camera" };
+        pictureDialog.setItems(pictureDialogItems,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                choosePhotoFromGallary();
+                                break;
+                            case 1:
+                                takePhotoFromCamera();
+                                break;
+                        }
+                    }
+                });
+        pictureDialog.show();
+    }
+
+    private void choosePhotoFromGallary()
+    {
+        mGetContent.launch("image/*");
+    }
+
+    private void takePhotoFromCamera()
+    {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        activityResultLauncher.launch(intent);
+    }
+
+    private ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri result) {
+                    // this result is the result of uri
+                    if (result != null){
+                        avatar.setImageURI(result);
+                        // result will be set in imageUri
+                        imageUri = result;
+                    }
+                }
+            });
+
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == -1 && result.getData() != null ){
+                    Bundle bundle = result.getData().getExtras();
+                    Bitmap bitmap = (Bitmap) bundle.get("data");
+                    // code này để chuyển bitmap thành link Uri
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,bytes);
+                    String path = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, "val", null );
+                    Uri uri = Uri.parse(path);
+                    avatar.setImageURI(uri);
+                    imageUri = uri;
+                }
+            }
+    );
+
+
+
 }

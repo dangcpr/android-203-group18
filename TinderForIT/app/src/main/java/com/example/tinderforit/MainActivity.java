@@ -19,6 +19,7 @@ public class MainActivity extends FragmentActivity implements MainCallBacks {
     HomeFragment homeFragment = new HomeFragment();
     ProfileFragment profileFragment = new ProfileFragment();
     ChatFragment chatFragment = new ChatFragment();
+    MessagesFragment messagesFragment = new MessagesFragment();
     MatchesFragment matchesFragment = new MatchesFragment();
     CongratMatchedFragment congratMatchedFragment = new CongratMatchedFragment();
 
@@ -36,7 +37,7 @@ public class MainActivity extends FragmentActivity implements MainCallBacks {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.action_chat:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.card_frame, chatFragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.card_frame, messagesFragment).commit();
                         return true;
                     case R.id.action_matches:
                         getSupportFragmentManager().beginTransaction().replace(R.id.card_frame, matchesFragment).commit();
@@ -76,7 +77,7 @@ public class MainActivity extends FragmentActivity implements MainCallBacks {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.slide_in_bottom, R.anim.fade_out);
-        fragmentTransaction.replace(R.id.card_frame, chatFragment);
+        fragmentTransaction.replace(R.id.card_frame, messagesFragment);
         fragmentTransaction.commit();
 
         bottomNavigationView.setSelectedItemId(R.id.action_chat);

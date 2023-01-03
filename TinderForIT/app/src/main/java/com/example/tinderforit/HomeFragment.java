@@ -187,8 +187,8 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@androidx.annotation.NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     Log.e("new Match","true");
-                    usersDB.child(snapshot.getKey()).child("Connection").child("Match").child(currentUser.getUid()).setValue(true);
-                    usersDB.child(currentUser.getUid()).child("Connection").child("Match").child(snapshot.getKey()).setValue(true);
+                    usersDB.child(snapshot.getKey()).child("Connection").child("Match").child(currentUser.getUid()).setValue(0);
+                    usersDB.child(currentUser.getUid()).child("Connection").child("Match").child(snapshot.getKey()).setValue(0);
                     // Change MatchFragment
 
                     ((MainActivity) getActivity()).onMsgFromFragToMain("HomeFragment", currentUser.getUid() + "," + snapshot.getKey());
