@@ -181,7 +181,7 @@ public class FirstComeActivity extends Activity {
                     userProfile.put("dateOfBirth",dateOfBirth);
                     userProfile.put("gender",gender);
 
-                    mDatabase.child("UserProfile").child(userid).setValue(userProfile);
+                    mDatabase.child("UserProfile").child(userid).updateChildren(userProfile);
 
                     // Upload Image and Update Image Url
 
@@ -275,5 +275,16 @@ public class FirstComeActivity extends Activity {
         editor.putString("Detect","newUser");
         editor.apply();
         editor.commit();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent i = new Intent(FirstComeActivity.this, LoginEmailActivity.class);
+        i.putExtra("Detect","newUser");
+        startActivity(i);
+        finish();
     }
 }

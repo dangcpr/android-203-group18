@@ -84,6 +84,7 @@ public class CreateEmailAccountActivity extends AppCompatActivity {
                         Intent i = new Intent(CreateEmailAccountActivity.this, VerifyEmailActivity.class);
                         i.putExtra("Detect",detect);
                         startActivity(i);
+                        finish();
                     } else {
                         Toast.makeText(CreateEmailAccountActivity.this, task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                     }
