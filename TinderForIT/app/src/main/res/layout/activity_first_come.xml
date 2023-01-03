@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    tools:context=".FirstComeActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +19,8 @@
             android:layout_width="220dp"
             android:layout_height="253dp"
             android:layout_gravity="center"
-            android:contentDescription="No Image"/>
+            android:contentDescription="No Image"
+            android:src="@drawable/noimage" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layouttextFirstName"
@@ -113,7 +115,7 @@
         </RadioGroup>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/sendinfo"
+            android:id="@+id/fc_sendinfo"
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"

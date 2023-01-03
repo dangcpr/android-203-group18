@@ -19,6 +19,7 @@ public class VerifyEmailActivity extends Activity {
     Button btnVerify, btnReturnLogin;
     TextView txtVerifyMsg;
     FirebaseAuth mAuth;
+    String detect;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -31,10 +32,17 @@ public class VerifyEmailActivity extends Activity {
         txtVerifyMsg = findViewById(R.id.txt_verify_msg);
         mAuth = FirebaseAuth.getInstance();
 
+        // Get from CreateEmailAccount Activity and Login (inCase user who not verified email and click back to Login -> they will redirect here 1 more time)
+        Bundle extras = getIntent().getExtras();
+        if (extras != null){
+            detect = extras.getString("Detect");
+        }
+
         btnReturnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(VerifyEmailActivity.this, LoginEmailActivity.class);
+                i.putExtra("Detect",detect);
                 startActivity(i);
                 finish();
             }
@@ -61,6 +69,7 @@ public class VerifyEmailActivity extends Activity {
 
             // return to login screen
             Intent i = new Intent(VerifyEmailActivity.this, LoginEmailActivity.class);
+            i.putExtra("Detect",detect);
             startActivity(i);
             finish();
         }
