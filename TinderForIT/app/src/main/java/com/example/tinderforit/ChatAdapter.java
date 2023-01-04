@@ -66,7 +66,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
                 holder.lp_myLayout.setVisibility(View.GONE);
                 holder.lp_oppLayout.setVisibility(View.VISIBLE);
                 Picasso.get().load(list.getMsg()).into(holder.img_oppMessage);
-                holder.txtp_myMessageTime.setText(String.format("%s %s", list.getDateSend(), list.getTimeSend()));
+                holder.txtp_oopMessageTime.setText(String.format("%s %s", list.getDateSend(), list.getTimeSend()));
             }
             else
             {

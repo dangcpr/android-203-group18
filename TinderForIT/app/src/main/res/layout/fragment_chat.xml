@@ -99,7 +99,7 @@
             <ImageView
                 android:padding="5dp"
                 android:id="@+id/btn_sendPic"
-                android:src="@drawable/ic_send"
+                android:src="@drawable/ic_camera"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentStart="true"
