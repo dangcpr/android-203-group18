@@ -53,6 +53,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
+                app:errorEnabled="true"
                 android:hint="Email"
 
                 app:boxStrokeColor="@color/primary"
@@ -67,7 +68,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:textCursorDrawable="@drawable/cursor_custom" />
+                    android:textCursorDrawable="@drawable/cursor_custom">
+                    <requestFocus/>
+                </com.google.android.material.textfield.TextInputEditText>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

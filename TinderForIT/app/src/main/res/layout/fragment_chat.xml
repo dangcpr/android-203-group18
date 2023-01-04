@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ChatFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/l_user"
+            android:layout_width="match_parent"
+            android:layout_height="85dp">
+
+            <ImageView
+                android:id="@+id/btn_arrowBack"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/botron_button"
+                android:paddingStart="12sp"
+                android:paddingEnd="2sp"
+                android:src="@drawable/ic_arrow_back" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ptr_userProfile"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="20dp"
+                android:layout_toEndOf="@+id/btn_arrowBack"
+                android:src="@drawable/img_default" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/ptr_userProfile"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="User Name"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_userStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:maxLines="1"
+                    android:text="Status"
+                    android:textColor="@color/gray"
+                    android:textSize="13dp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/butGetCall"
+                android:layout_width="52dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="285dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_toEndOf="@+id/btn_arrowBack"
+                android:background="@drawable/phone_call"
+                app:backgroundTint="@color/primary" />
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_messages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/l_user"
+            android:layout_above="@+id/l_send"
+            />
+
+        <RelativeLayout
+            android:id="@+id/l_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+            <ImageView
+                android:padding="5dp"
+                android:id="@+id/btn_sendPic"
+                android:src="@drawable/ic_send"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="10dp"/>
+            <EditText
+                android:paddingStart="10dp"
+                android:id="@+id/edt_messagesEditText"
+                android:drawableStart="@drawable/ic_sms"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:textSize="14sp"
+                android:background="@drawable/botron_edittext"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="65dp"
+                android:hint="type some text ..."/>
+            <ImageView
+                android:padding="5dp"
+                android:id="@+id/btn_send"
+                android:src="@drawable/ic_send"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

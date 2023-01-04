@@ -139,7 +139,7 @@
                                 android:background="@drawable/botron_button_facebook"
                                 android:gravity="center"
                                 android:textColor="#EF1F1F"
-                                android:textStyle="bold"></androidx.appcompat.widget.AppCompatButton>
+                                android:textStyle="bold"/>
 
                             <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/login_with_google"
@@ -151,7 +151,15 @@
                                 android:background="@drawable/botron_button_google"
                                 android:gravity="center"
                                 android:textColor="#EF1F1F"
-                                android:textStyle="bold"></androidx.appcompat.widget.AppCompatButton>
+                                android:textStyle="bold"/>
+
+                            <com.facebook.login.widget.LoginButton
+                                android:id="@+id/login_button"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="30dp"
+                                android:layout_marginBottom="30dp" />
 
                         </LinearLayout>
                     </LinearLayout>

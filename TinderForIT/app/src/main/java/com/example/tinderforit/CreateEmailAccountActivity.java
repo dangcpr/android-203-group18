@@ -1,16 +1,17 @@
 package com.example.tinderforit;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -65,8 +66,23 @@ public class CreateEmailAccountActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()) {
+
+                        boolean isNewUser = task.getResult().getAdditionalUserInfo().isNewUser();
+                        String detect;
+
+                        // Check new user to direct them to Main or SetProfile Activity
+                        if (isNewUser) {
+                            Log.e("Login; is user new:","True");
+                            detect = "newUser";
+                        } else {
+                            Log.e("Login; is user new:","False");
+                            detect = "notNewUser";
+                        }
+
                         Toast.makeText(CreateEmailAccountActivity.this, "Register successfully",Toast.LENGTH_SHORT).show();
+
                         Intent i = new Intent(CreateEmailAccountActivity.this, VerifyEmailActivity.class);
+                        i.putExtra("Detect",detect);
                         startActivity(i);
                     } else {
                         Toast.makeText(CreateEmailAccountActivity.this, task.getException().getMessage(),Toast.LENGTH_SHORT).show();

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CallActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+            <!-- Button to connect to Sendbird -->
+            <Button
+                android:id="@+id/butConnect"
+                android:layout_width="wrap_content"
+                android:layout_height="43dp"
+                android:layout_gravity="center"
+                android:text="Connect"
+                android:backgroundTint="@color/primary"></Button>
+            <!-- Button for making a call -->
+            <Button
+                android:id="@+id/butMakeCall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Make Call"
+                android:backgroundTint="@color/primary"></Button>
+
+            <!--
+                SENDBIRD VIDEO VIEW
+            -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+                <!-- Remote video -->
+                <com.sendbird.calls.SendBirdVideoView
+                    android:id="@+id/video_view_fullscreen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="32dp"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+                <!-- My video -->
+                <com.sendbird.calls.SendBirdVideoView
+                    android:id="@+id/video_view_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="32dp"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
