@@ -1,14 +1,13 @@
 package com.example.tinderforit;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,12 +23,11 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.view.menu.ActionMenuItem;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,12 +42,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.firebase.ui.auth.AuthUI;
-
-import com.sendbird.android.poll.PollVoteEvent;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Console;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -146,6 +140,9 @@ public class ProfileFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseUser user;
 
+    ActivityResultLauncher<Intent> activityResultLauncher;
+    ActivityResultLauncher<String> mGetContent;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                    Bundle savedInstanceState) {
@@ -174,7 +171,24 @@ public class ProfileFragment extends Fragment {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+        activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == -1 && result.getData() != null ){
+                        Bundle bundle = result.getData().getExtras();
+                        Bitmap bitmap = (Bitmap) bundle.get("data");
+                        // code này để chuyển bitmap thành link Uri
+                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG,100,bytes);
+                        String path = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, "val", null );
+                        Uri uri = Uri.parse(path);
+                        avatar.setImageURI(uri);
+                        imageUri = uri;
+                    }
+                }
+        );
+
+        mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 new ActivityResultCallback<Uri>() {
                     @Override
                     public void onActivityResult(Uri result) {
@@ -436,43 +450,17 @@ public class ProfileFragment extends Fragment {
     {
         mGetContent.launch("image/*");
     }
+    private static final int MY_CAMERA_REQUEST_CODE = 100;
+
 
     private void takePhotoFromCamera()
     {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        activityResultLauncher.launch(intent);
+        if(ContextCompat.checkSelfPermission(getContext(),android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{android.Manifest.permission.CAMERA},1);
+            return;
+        } else {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            activityResultLauncher.launch(intent);
+        }
     }
-
-    private ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
-            new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri result) {
-                    // this result is the result of uri
-                    if (result != null){
-                        avatar.setImageURI(result);
-                        // result will be set in imageUri
-                        imageUri = result;
-                    }
-                }
-            });
-
-    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == -1 && result.getData() != null ){
-                    Bundle bundle = result.getData().getExtras();
-                    Bitmap bitmap = (Bitmap) bundle.get("data");
-                    // code này để chuyển bitmap thành link Uri
-                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,bytes);
-                    String path = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, "val", null );
-                    Uri uri = Uri.parse(path);
-                    avatar.setImageURI(uri);
-                    imageUri = uri;
-                }
-            }
-    );
-
-
-
 }
