@@ -135,7 +135,7 @@ public class ChatFragment extends Fragment {
         chatAdapter=new ChatAdapter(chatLists,getActivity());
         chattingRecyclerView.setAdapter(chatAdapter);
         //set last time seen msg
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int countMsg =(int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
@@ -147,7 +147,7 @@ public class ChatFragment extends Fragment {
             }
         });
         //set adapter msg
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(getChatKey.isEmpty()) {
@@ -219,24 +219,6 @@ public class ChatFragment extends Fragment {
                     databaseReference.child("Chat").child(getChatKey).child("Messages").child(currentTimestamp).child("FromUID").setValue(mAuth.getUid());
                     databaseReference.child("Chat").child(getChatKey).child("Messages").child(currentTimestamp).child("msg").setValue(getChatMessage);
 
-                    //update messages
-                    ChatList chatList = new ChatList(messagesFromUID, getChatMessage,simpleDateFormat.format(date), simpleTimeFormat.format(date));
-                    chatLists.add(chatList);
-                    chatAdapter.updateChatList(chatLists);
-                    chattingRecyclerView.scrollToPosition(chatLists.size() - 1);
-                    //update last time users seen msg
-                    //set last time seen msg
-                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            int countMsg =(int)snapshot.child("Chat").child(getChatKey).child("Messages").getChildrenCount();
-                            databaseReference.child("UserProfile").child(messagesFromUID).child("Connection").child("Match").child(getUID).setValue(countMsg);
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
                     //clear buff Edit text
                     edt_messagesEditText.setText("");
                 }
