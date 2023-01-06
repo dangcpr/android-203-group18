@@ -1,8 +1,8 @@
 package com.example.tinderforit;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -39,9 +39,6 @@ public class MainActivity extends FragmentActivity implements MainCallBacks {
                     case R.id.action_chat:
                         getSupportFragmentManager().beginTransaction().replace(R.id.card_frame, messagesFragment).commit();
                         return true;
-                    case R.id.action_matches:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.card_frame, matchesFragment).commit();
-                        return true;
                     case R.id.action_profile:
                         getSupportFragmentManager().beginTransaction().replace(R.id.card_frame, profileFragment).commit();
                         return true;
@@ -61,26 +58,38 @@ public class MainActivity extends FragmentActivity implements MainCallBacks {
         fragmentTransaction.setCustomAnimations(R.anim.slide_in_bottom, R.anim.fade_out);
         fragmentTransaction.replace(R.id.card_frame, congratMatchedFragment);
         fragmentTransaction.commit();
+
+        hideNavBar();
     }
 
     public void replaceToHomeFragments() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.slide_in_bottom, R.anim.fade_out);
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_top, R.anim.slide_out_bottom);
         fragmentTransaction.replace(R.id.card_frame, homeFragment);
         fragmentTransaction.commit();
 
         bottomNavigationView.setSelectedItemId(R.id.action_home);
+        showNavBar();
     }
 
     public void replaceToChatFragments() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.slide_in_bottom, R.anim.fade_out);
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
         fragmentTransaction.replace(R.id.card_frame, messagesFragment);
         fragmentTransaction.commit();
 
         bottomNavigationView.setSelectedItemId(R.id.action_chat);
+        showNavBar();
+    }
+
+    private void hideNavBar(){
+        bottomNavigationView.setVisibility(View.GONE);
+    }
+
+    private void showNavBar(){
+        bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
     @Override
