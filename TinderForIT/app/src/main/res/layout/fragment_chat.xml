@@ -96,6 +96,14 @@
             android:layout_alignParentBottom="true"
             android:paddingTop="10dp"
             android:paddingBottom="10dp">
+            <ImageView
+                android:padding="5dp"
+                android:id="@+id/btn_sendPic"
+                android:src="@drawable/ic_camera"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="10dp"/>
             <EditText
                 android:paddingStart="10dp"
                 android:id="@+id/edt_messagesEditText"
@@ -104,7 +112,7 @@
                 android:layout_height="50dp"
                 android:textSize="14sp"
                 android:background="@drawable/botron_edittext"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="50dp"
                 android:layout_marginEnd="65dp"
                 android:hint="type some text ..."/>
             <ImageView
