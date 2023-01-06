@@ -7,11 +7,6 @@
         android:title="@string/action_home"/>
 
     <item
-        android:id="@+id/action_matches"
-        android:icon="@drawable/matches"
-        android:title="@string/action_matches"/>
-
-    <item
         android:id="@+id/action_chat"
         android:icon="@drawable/chatting"
         android:title="@string/action_chat"/>
