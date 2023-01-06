@@ -153,8 +153,6 @@ public class Choose_Login_And_Reg extends Activity {
                                         startActivity(myIntent);
                                         finish();
                                     }
-                                    Intent myIntent=new Intent(Choose_Login_And_Reg.this,MainActivity.class);
-                                    startActivity(myIntent);
                                 }
                                 else{
                                     //do something
