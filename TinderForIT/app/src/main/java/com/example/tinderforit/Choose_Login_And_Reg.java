@@ -14,7 +14,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.login.Login;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -129,6 +128,7 @@ public class Choose_Login_And_Reg extends Activity {
         Intent signIntent=gsc.getSignInIntent();
         startActivityForResult(signIntent,RC_SIGN_IN);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -143,14 +143,15 @@ public class Choose_Login_And_Reg extends Activity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     //finish();
-                                    boolean _isNewUser = task.getResult().getAdditionalUserInfo().isNewUser();
-
-                                    if(_isNewUser){
+                                    if(task.getResult().getAdditionalUserInfo().isNewUser()){
                                         //Do Stuffs for new user
-                                        Toast.makeText(Choose_Login_And_Reg.this,"Login Google Fail Show Form Sign Up",Toast.LENGTH_SHORT).show();
+                                        Intent myIntent=new Intent(Choose_Login_And_Reg.this, FirstComeActivity.class);
+                                        startActivity(myIntent);
+                                        finish();
                                     }else{
-                                        //Continue with Sign up
-                                        Toast.makeText(Choose_Login_And_Reg.this,"Login GoogleSuccess User is exists in Firebase",Toast.LENGTH_SHORT).show();
+                                        Intent myIntent=new Intent(Choose_Login_And_Reg.this, MainActivity.class);
+                                        startActivity(myIntent);
+                                        finish();
                                     }
                                     Intent myIntent=new Intent(Choose_Login_And_Reg.this,MainActivity.class);
                                     startActivity(myIntent);
